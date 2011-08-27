@@ -1,0 +1,33 @@
+\section{Resource Management Operations}\label{sec:Resource}\index{resource 
+management operations}
+
+Operations defined here are are common to all resource management operations - i.e.
+producers and consumers.
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+
+\begin{method}{close}
+\inpar{xsd:int connectionId}{Resource identifier.}
+\OK
+\desc Schedules a resource for destruction after the resource has completed its work.
+\end{method}
+
+\begin{method}{destroy}
+\inpar{xsd:int connectionId}{Primary Producer resource identifier.}
+\OK
+\desc 
+Destroys a Primary Producer without any special \textit{close} processing.
+\end{method}
+
+
+\subsubsection{System Interface}
+
+\begin{method}[resource]{ping}
+\inpar{xsd:int connectionId}{Resource identifier.}
+\OK
+\desc
+Checks if a resource is still alive (and throws an exception if it is not).
+Has no side-effects on the resource. 
+\end{method}

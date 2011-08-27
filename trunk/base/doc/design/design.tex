@@ -1,0 +1,35 @@
+\documentclass{egee-hacked}
+\usepackage{comment}
+\usepackage{longtable}
+\usepackage{makeidx}
+
+\newenvironment{code}{\begin{list}{}{}\tt \sloppy}{\end{list}}
+
+\newenvironment{sloppytt}{\begin{sloppypar}\tt}{\end{sloppypar}}
+
+\title{R-GMA Design}
+\Version{6.2.0}
+\Date{\today}
+\Dissemination{PUBLIC}
+
+\Abstract{This document is an implementation design for R-GMA}
+
+\begin{document}
+\include{frontmatter}
+
+\tableofcontents
+
+\include{intro}
+\include{service}
+\include{producer}
+\include{consumer}
+\include{registry}
+\include{schema}
+\include{mediator}
+\include{query-answering}
+\include{sql-parsing}
+\include{tasks}
+\include{remote-calls}
+\include{logging}
+
+\end{document}

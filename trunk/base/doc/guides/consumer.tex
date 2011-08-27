@@ -1,0 +1,33 @@
+\section{Consuming Information}
+
+\label{sec:consumer}
+
+\subsection{Types of Query}
+There are four types of query: \emph{continuous}, \emph{latest}, {\sl
+history} and \emph{static} (the latter is only supported by on-demand
+producers). The set of queries that a particular producer supports is
+recorded in the registry. All query types except static can take an
+optional time interval parameter (see below).
+
+A continuous query causes all new tuples that match the query, to be
+streamed into the consumer's tuple-storage as soon as they are
+inserted into the virtual table by the producers. Streaming continues
+until the consumer requests it to stop. If a time interval is
+specified, the consumer will additionally receive any tuples which are
+already in the virtual table when the query starts, and which are no
+older than the time interval. There is no guarantee that tuples are
+time-ordered. All primary and secondary producers support continuous
+queries. On-demand producers do not.
+
+Latest and history queries are \emph{one-time} queries: they execute
+on the current contents of the virtual table, then terminate. In a
+history query, all versions of any matching tuples are returned; in a
+latest query, only those representing the ``current state''
+(see~\ref{sec:consumers}) are returned. In both cases, a time interval
+may be specified with the query, to limit the age of the tuples
+returned. Primary and secondary producers may optionally support
+one-time queries. On-demand producers do not.
+
+\subsection{Consumer Examples}
+This provides  examples of code you might use or adapt.
+\subsubsection{Simple Consumer Example}

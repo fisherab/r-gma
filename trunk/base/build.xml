@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+		Copyright (c) 2004 on behalf of the EU EGEE Project
+	-->
+
+<project name="base" default="install">
+
+	<property name="prefix" value="build/prefix" />
+
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
+
+	<target name="install" depends="installCommon, installUnix, installNotUnix" />
+
+	<target name="installCommon">
+		<fixcrlf srcdir="src/scripts" />
+
+		<copy toDir="${prefix}/share/doc/rgma-base">
+			<fileset dir="doc/built" />
+			<fileset file="RELEASE-NOTES" />
+			<fileset file="LICENSE" />
+		</copy>
+
+		<copy toDir="${prefix}/share/doc/rgma-base/examples">
+			<fileset dir="doc/guides">
+				<include name="*Example.c" />
+				<include name="*Example.py" />
+				<include name="*Example.java" />
+				<include name="*Example.cpp" />
+				<include name="ResilientConsumer.*" />
+				<include name="ResilientPrimaryProducer.*" />
+				<include name="README.examples" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${prefix}/var/rgma" />
+
+	</target>
+
+	<target name="installUnix" if="isUnix">
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts">
+				<exclude name="sbin/*" />
+			</fileset>
+		</copy>
+		<copy toDir="${prefix}">
+
+			<fileset dir="src/scripts">
+				<include name="sbin/*" />
+			</fileset>
+			<mapper type="glob" from="*.py" to="*" />
+		</copy>
+		<chmod perm="700" dir="${prefix}/sbin/" includes="*" verbose="Yes" />
+		<chmod perm="755" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+		<chmod perm="755" dir="${prefix}/share/doc/rgma-base/examples/" includes="*.py" verbose="Yes" />
+	</target>
+
+
+	<target name="installNotUnix" unless="isUnix">
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts" />
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${prefix}" />
+	</target>
+
+</project>

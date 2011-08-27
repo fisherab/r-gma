@@ -1,0 +1,2 @@
+cd $RPM_INSTALL_PREFIX/sbin
+chmod 700 rgma-remove rgma-setup

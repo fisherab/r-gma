@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--Copyright (c) 2004 on behalf of the EU EGEE Project-->
+
+<project name="api-java" default="install">
+
+	<property file="build.properties" />
+	<fixcrlf srcdir="rgma-client-check" />
+	<path id="compile.classpath">
+		<fileset file="${org.glite.security.trustmanager.location}/share/java/glite-security-trustmanager.jar" />
+		<fileset file="${org.glite.security.util-java.location}/share/java/glite-security-util-java.jar" />
+		<fileset file="${bouncycastle.location}/share/java/bcprov.jar" />
+	</path>
+
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<mkdir dir="build/share/java" />
+		<mkdir dir="build/rgma-client-check" />
+		<javac srcdir="src" destdir="build/classes" target="1.5">
+			<classpath>
+				<path refid="compile.classpath" />
+			</classpath>
+		</javac>
+		<javac srcdir="rgma-client-check" destdir="build/rgma-client-check" target="1.5">
+			<classpath>
+				<pathelement location="build/classes" />
+			</classpath>
+		</javac>
+		<jar destfile="build/share/java/glite-rgma-api-java.jar" basedir="build/classes">
+			<manifest>
+				<section name="common">
+					<attribute name="Version" value="${version}" />
+					<attribute name="Build-date" value="${TODAY}" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="${prefix}" />
+	</target>
+
+	<target name="doc">
+		<mkdir dir="build/doc" />
+		<javadoc packagenames="org.glite.rgma" classpathref="compile.classpath" sourcepath="src" destdir="build/doc" version="true" use="true" access="public" />
+	</target>
+
+	<target name="install" depends="compile, doc">
+		<copy toDir="${prefix}/share/java">
+			<fileset dir="build/share/java/" />
+		</copy>
+		<copy toDir="${prefix}/share/doc/rgma-api-java">
+			<fileset file="LICENSE" />
+			<fileset file="RELEASE-NOTES" />
+			<fileset dir="build/doc" />
+		</copy>
+		
+		<copy toDir="${prefix}/libexec/rgma-client-check/java">
+			<fileset dir="build/rgma-client-check" />
+			<fileset dir="rgma-client-check">
+				<exclude name="*.java" />
+			</fileset>
+		</copy>
+		<chmod perm="ugo+rx" dir="${prefix}/libexec/rgma-client-check/java" includes="producer.py, consumer.py" />
+
+	</target>
+
+</project>

@@ -1,0 +1,52 @@
+## Show names of all tables defined in the Schema
+show tables
+
+## Print table description
+describe userTable
+
+## Set up a secondary producer
+set sp table userTable
+sleep 5
+# This will use all the currently set defaults
+#
+# The sleep command is to ensure that the secondary producer is ready by the 
+# time the inserts are performed. It is *not* normally required.
+
+## Publish data
+insert into userTable values ('id1', 'string1', 1.2 , 3)
+insert into userTable (userid, aString) values ('id1', 'string2') 
+insert into userTable (userid, aString) values ('id2', 'string3')
+sleep 5
+# The sleep is to make sure that the tuples have reached 
+# the secondary producer before the query is started. It is *not* normally required.
+
+## Show list of producers for a particular table
+show producers of userTable
+        
+## Issue a continuous query
+set query C
+set timeout 30
+select * from userTable
+# This will wait for 30 seconds then return nothing as no data are being 
+# published - unless someone else is running the examples at the same time. If you start up another 
+# copy of the command line tool and publish data you should see it flowing through.
+        
+## Issue a continuous query with an interval
+set query C 5 minutes
+select * from userTable
+# With the query interval of 5 minutes this will show data published from five 
+# minutes in the past and will continue to pick up new data for 30 seconds.
+        
+## Issue a latest query
+set query L
+select userid, astring from userTable
+# Set the query type to L. You should see at most two tuples for the 
+# two different values of 'userid'. The timeout of 30 seconds will still be applied however as a one off 
+# query it should be answered much more quickly - unless your server is heavily loaded.""")
+        
+## Issue a history query
+set query H
+select userid, astring from userTable where anint is not null
+# Without the 'where clause' this would return all the published data - subject to the 
+# HRP. However with the clause it should just return the first tuple as this had the 'anint' value set.""")
+ 

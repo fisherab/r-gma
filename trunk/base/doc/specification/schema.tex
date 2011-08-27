@@ -1,0 +1,186 @@
+\section{Schema Service}\label{sec:Schema}\index{schema}
+\subsection{Description}
+
+There is exactly one schema per virtual database. It holds the names and 
+definitions of all of the tables in the virtual database, and their 
+authorization rules. Each server holds a copy of the schema for each virtual 
+database it supports. Unlike the registry, requests are not forwarded as each 
+server has its own copy. As part of the R-GMA configuration one schema should 
+be designated as master for each virtual database. Each server is configured 
+with a file for each virtual data base it supports identifying the master 
+schema. The slaves poll the master periodically to obtain updates.
+
+The Schema Service is responsible for authenticating all clients and
+services that connect to it, and for authorizing all operations and
+all requests to access the schemas it is hosting, as specified in
+chapter \ref{sec:Security}.
+
+Note that all operations that change the schema return a boolean flag
+\textit{changed} which is true if the state of the schema has (or may have been
+changed). This is for internal use as changes are made first to the master
+schema and then if changes have been made the local schema is updated from the
+master. The flag is not exposed by the user API.
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+The following operations are available to client applications.
+
+\begin{method}{createTable}\index{create table}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string createTableStatement}{SQL CREATE TABLE statement.}
+\inpar{rgma:StringList tableAuthz}{Table authorization rules.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Adds a new table definition to the schema of the requested virtual database.
+Rules for naming tables and columns, supported column types and the format of
+the CREATE TABLE statement are all specified in chapter \ref{sec:SQL}. The
+authorization rules are described in chapter \ref{sec:Security}. 
+\end{method}
+
+\begin{method}{dropTable}\index{drop table}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table name.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Drops a table from the schema of the requested virtual database.
+\end{method}
+
+\begin{method}{alter}\index{alter}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string torv}{TABLE or VIEW.}
+\inpar{xsd:string tableName}{Table name.}
+\inpar{xsd:string action}{ADD, DROP or MODIFY.}
+\inpar{xsd:string name}{Column name.}
+\inpar{xsd:string type (0..1)}{Column type.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Alter a table defintion. \textit{add} and \textit{drop} are permitted
+for a table or view and \textit{modify} to a table. The column type must be
+specified for \textit{add} and  \textit{modify} on a table and in no other case.
+\end{method}
+
+\begin{method}{createIndex}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string createIndexStatement}{SQL CREATE INDEX statement.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Adds a new index definition for an existing table in a schema of the requested
+virtual database. The format of the CREATE INDEX statement is specified in
+\ref{sec:SQLCreateIndex}. Indexes cannot be defined for views. 
+\end{method}
+
+\begin{method}{dropIndex}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string indexName}{Index name.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Drops an index from the schema of the requested virtual database.
+\end{method}
+
+\begin{method}{createView}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string createViewStatement}{SQL CREATE VIEW statement.}
+\inpar{rgma:StringList viewAuthz}{View authorization rules.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Adds a new view definition on an existing table in a schema of the requested
+virtual database. Views are described in \ref{sec:SecurityViews} and the format
+of the CREATE VIEW statement is specified in \ref{sec:SQLCreateView}. 
+\end{method}
+
+\begin{method}{dropView}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string viewName}{View name.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Drops a view from the schema of the requested virtual database.
+\end{method}
+
+\begin{method}{getAllTables}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\outhead{Tuple (0..*)}{}
+\outpar{xsd:string tableName}{Table or view name.}
+\desc Returns a list of all table and view names in the schema of the requested
+virtual database (no distinction is made between tables and views).
+\end{method}
+
+\begin{method}{getTableDefinition}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table or view name.}
+\outhead{Tuple (0..*)}{}
+\outpar{xsd:string tableName}{Table or view name.}
+\outpar{xsd:string columnName}{Name of column}
+\outpar{xsd:string columnType}{Type of column - e.g. REAL or INTEGER}
+\outpar{xsd:integer columnSize}{Size of column}
+\outpar{xsd:boolean columnIsNotNull}{{If column is NOT NULL}}
+\outpar{xsd:boolean columnIsPrimaryKey}{If column is PRIMARY KEY}
+\outpar{xsd:string viewFor}{}
+\desc Returns a table's column definitions from the schema of the requested virtual
+database (used by the R-GMA Browser). If \textit{tableName} is a view, only
+returns details of those columns in the view.
+\end{method}
+
+\begin{method}{getTableIndexes}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table name.}
+\outhead{Tuple (0..*)}{}
+\outpar{xsd:string indexName}{Table or index.}
+\outpar{xsd:string columnName}{Name of column}
+\desc Returns a list of the indexes associated with a table (indexes cannot be
+associated with a view).
+\end{method}
+
+\begin{method}{setAuthorizationRules}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table or view name.}
+\inpar{rgma:StringList tableAuthz}{Table authorization rules.}
+\outhead{Tuple}{}
+\outpar{xsd:boolean changed}{True if any changes made.}
+\desc Replaces a table's or view's read/write authorization rules. The authorization
+rules are described in chapter \ref{sec:Security}. 
+\end{method}
+
+\begin{method}{getAuthorizationRules}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table or view name.}
+\outhead{Tuple (0..*)}{}
+\outpar{xsd:string authzRule}{Authorization rule.}
+\desc Returns the read/write authorization rules associated with a table or view.
+Authorization rules are described in chapter \ref{sec:Security}.
+\end{method}
+
+See also the operations common to all services:
+getProperty~\ref{op:getProperty}.
+
+\subsubsection{System Interface}
+The following operations are available to other R-GMA services only.
+
+\begin{method}{getTableTimestamp}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:string tableName}{Table name.}
+\outhead{Tuple}{}
+\outpar{xsd:long timeStamp}{TimeStamp in ms since 1970.}
+\desc Returns timestamp when table definition was last modified.
+\end{method}
+
+
+\begin{method}{getSchemaUpdates}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:long timeStamp}{TimeStamp in ms since 1970.}
+\outpar{xsd:string updates}{Table details.}
+\desc Returns full information for each table that has changed since the
+specified timestamp - which may be zero.
+\end{method}
+                                                                                
+\subsubsection{Replication}\label{sec:SchemaReplication}
+Periodically each slave schema sends a request to the master for updates.
+
+\subsubsection{Schema Database}\index{schema database}
+
+The Schema maintains lists of the definitions of all tables in the virtual
+database, and their access permissions. How these are stored is implementation
+dependent, but they're likely to be database tables. It is a requirement that
+their contents can survive the Schema Service being restarted. The lists need
+to contain just sufficient details for the Schema Service operations to be
+supported.

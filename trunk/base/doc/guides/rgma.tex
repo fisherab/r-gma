@@ -1,0 +1,213 @@
+\section{The R-GMA Command Line Tool}
+\label{sec:cl}
+
+\subsection{Introduction}
+
+The R-GMA command line tool offers simple command-based access to the
+R-GMA virtual database.  The interface is intended to be similar to
+the command-line tools supplied with databases, e.g. MySQL.
+
+\subsubsection{Starting the R-GMA Command Line Tool}
+
+To start the R-GMA command line tool, run the command
+\verb|rgma <vdb>|, where \verb|<vdb>| is the vdb you wish to use.
+
+
+\subsubsection{Entering Commands}
+
+Commands are entered by typing at the \verb/rgma>/ prompt and hitting
+\emph{Enter} to execute the command. A history of commands executed can
+be accessed using the \emph{Up} and \emph{Down} arrow keys. Commands
+can be entered in lower or upper case (but not a mixture of both).
+
+Command auto-completion is supported -- hit the \emph{Tab} key when you
+have partly entered a command and it will either be completed
+automatically or a list of matching alternatives will be displayed.
+
+\subsection{Commands}
+
+\subsubsection{Getting help}
+
+\begin{tabular*}{15cm}{ll@{\extracolsep{\fill}}}
+\verb/help/ & Displays the list of available commands \\
+\verb/help <command>/ & Displays help for a specific command \\
+\verb/help overview/ & Provides an overview of the tool \\
+\verb/help example/ & Shows some examples \\
+\end{tabular*}
+
+\subsubsection{Table Creation}
+
+First define the authorization rules you wish to impose on the
+table. These are in the form predicate:credentials:action see sections
+\ref{sec:authorization}. It is possible to modify rules associated
+with a table after you have created it. The following rule grants read
+and write access to everyone.
+\begin{verbatim}
+rgma> rules add ::RW
+\end{verbatim}
+
+To create a table use the standard SQL \verb\CREATE TABLE\ statement, e.g.
+
+\begin{verbatim}
+rgma> CREATE TABLE MyTable (col1 VARCHAR(50) PRIMARY KEY, col2 VARCHAR(50))
+\end{verbatim}
+
+To modify a table use the \verb/ALTER TABLE/ command. For example to add an
+extra integer column ``intcol'':
+
+\begin{verbatim}
+rgma> ALTER TABLE MyTable ADD intcol INTEGER
+\end{verbatim}
+
+and then get rid of the new column:
+
+\begin{verbatim}
+rgma> ALTER TABLE MyTable DROP intcol
+\end{verbatim}
+
+To drop a table use the \verb/DROP TABLE/ command.
+
+\subsubsection{Querying Data}
+
+Querying data uses the standard SQL \verb/SELECT/  statement, e.g.
+
+\begin{verbatim}
+rgma> SELECT col1 from MyTable
+\end{verbatim}
+
+The type of query can be changed using the \verb/SET QUERY/ command:
+
+\begin{verbatim}
+rgma> SET QUERY L
+\end{verbatim}
+or
+\begin{verbatim}
+rgma> SET QUERY C
+\end{verbatim}
+
+The query interval can also be specified:
+
+\begin{verbatim}
+rgma> SET QUERY C 2 minutes
+\end{verbatim}
+or equivalently as the default units are seconds (other units are minutes,
+hours and days)
+\begin{verbatim}
+rgma> SET QUERY C 120
+\end{verbatim}
+
+If a query interval is specified for a continuous query, the query will
+initially return a history of matching tuples up to the specified
+maximum age. It will then return new tuples as they are
+inserted.
+
+The query timeout controls how long the query
+will execute for before exiting automatically.
+
+\begin{verbatim}
+rgma> SET TIMEOUT 3 minutes
+\end{verbatim}
+or equivalently
+\begin{verbatim}
+rgma> SET TIMEOUT 180
+\end{verbatim}
+
+\subsubsection{Inserting Data}
+
+The SQL INSERT statement may be used to add data to the system:
+
+\begin{verbatim}
+rgma> INSERT INTO MyTable (col1, col2) VALUES ('a', 'b')
+\end{verbatim}
+
+Data are inserted into the system using a producer component. The
+producers can answer continuous queries, history and latest queries.
+
+A producer may have a predicate associated with it describing the
+subset of a table it provides. For example, if a table
+\texttt{MyTable} has the column \texttt{col} which for your producer
+will always have the value \texttt{me}, you can express this
+restriction using:
+
+\begin{verbatim}
+rgma> SET PP TABLE MyTable WHERE col1 = 'me'
+\end{verbatim}
+
+To remove the predicate use:
+
+\begin{verbatim}
+rgma> SET PP TABLE MyTable
+\end{verbatim}
+
+For a producer that can answer latest and/or history queries, the
+latest and history retention periods can be controlled using:
+
+\begin{verbatim}
+rgma> SET PP LRP 30 minutes
+rgma> SET PP HRP 2 hours
+\end{verbatim}
+
+\subsubsection{Secondary Producers}
+
+A secondary producer does not insert new data to the system, but
+collects data from individual producers and makes it available via its
+own producer component.
+
+To instruct the secondary producer to consume from the table
+\verb/MyTable/, use the following command:
+
+\begin{verbatim}
+rgma> SET SP TABLE MyTable
+\end{verbatim}
+
+It has an associated 
+history retention period that may be controlled:
+
+\begin{verbatim}
+rgma> SET SP HRP 1 days
+\end{verbatim}
+
+\subsubsection{Information Commands}
+
+To show a list of all R-GMA producers that produce the table \verb/MyTable/:
+\begin{verbatim}
+rgma> SHOW PRODUCERS OF MyTable
+\end{verbatim}
+
+To show a list of all table names:
+
+\begin{verbatim}
+rgma> SHOW TABLES
+\end{verbatim}
+
+To show information about a table \verb/MyTable/:
+
+\begin{verbatim}
+rgma> DESCRIBE MyTable
+\end{verbatim}
+
+\subsubsection{Directed Queries}
+
+Normally a component of R-GMA called the \emph{mediator} selects which
+producers are contacted to answer a query. For debugging purposes it
+may be useful to specify a particular producer to use instead. This is
+called a \emph{directed query} and can be specified with the
+\verb/USE PRODUCER/ command:
+
+\begin{verbatim}
+rgma> USE PRODUCER <endpoint> <resource id>
+\end{verbatim}
+
+All future \verb/SELECT/ queries will be directed to this
+producer. Only one producer may be specified. The \verb/<endpoint>/ and
+\verb/<resource id>/ should correspond to a valid producer that can
+answer the type of queries you put to it or no results will be
+returned. The \verb/SHOW PRODUCERS OF/ command displays endpoints and resource
+IDs of registered producers.
+
+To revert back to using the mediator to select producers, use the
+command:
+
+\begin{verbatim}
+rgma> USE MEDIATOR
+\end{verbatim}

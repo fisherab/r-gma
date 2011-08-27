@@ -1,0 +1,63 @@
+\section{Schema Service}
+\label{sec:schemaService}
+\index{Service!Schema}
+
+Package: \texttt{org.glite.rgma.server.services.schema}
+
+The SchemaService inherits from Service and owns a set of Schema
+Instances. Each instance holds the schema for a single VDB. 
+
+If an R-GMA server supports a VDB then it must offer a schema instance for that
+VDB. For each VDB one instance is the master and this is controlled by a
+configuration file.
+
+All schema updates are made first to the master and then an update is requested
+from the master. Other slaves are responsible for getting updates from
+the master.
+
+Each Schema Instance creates an instance of Schema Database to contact
+the underlying RDBMS. Different Schema Database implementations will be
+written - each peculiar to a single RDBMS to make effective use of
+that system. Each schema instance has its own replication thread.
+
+Most operations are passed to the schema instance corresponding to the
+VDB name except for those which may modify the state of the
+instance. These calls are all passed via the RemoteSchema to the
+master schema - where they are then processed locally.  Before passing
+the call on to the RemoteSchema the canForward flag must be
+checked. If the flag is not true an error must be returned. All calls
+to the Remote Service must have canForward set to false.
+
+The schema instance does very little - most of the work is done by the
+Schema Database which it creates when it starts.
+
+\subsection{Schema Replication}
+\label{sec:schemaReplication}
+Slaves poll the master to receive updates. The master does not know
+the slaves and does not hold any queues. The slaves ask for changes
+since a certain time and if they don't get a reply keep asking the
+same question on each replication loop. Eventually a reply will be
+received and the time stamp from the master is stored. Subsequent
+requests will ask for updates since the new time. To allow the master
+to respond correctly, major items in the schema (Table, View and
+Index) have a time stamp associated with them. This time stamp is set
+when the tuple is added or updated. Child tuples, such as the columns
+of a table have implicitly the same stamp. This means that if a column
+is removed from a table, the table and all its remaining columns will
+be transmitted upon request.
+
+Note that when a Table, View or Index is dropped from the schema, a
+time-stamped skeleton is left behind which will then have no related
+columns. This makes transmitting updates very easy at the cost of a
+few entries in the database. Evidently a table, view or index with no
+columns should normally be treated as not present - except in
+replication operations.
+
+\subsection{Schema Database}
+
+The SchemaDatabase is an interface to implementations for different
+vendor specific databases with all of the SQL needed to read and
+update it. The implementations uses vendor specific connection
+wrappers in org.glite.rgma.server.services.schema. 
+
+

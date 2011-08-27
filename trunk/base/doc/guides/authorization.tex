@@ -1,0 +1,144 @@
+\section{Authorization}
+\label{sec:authorization}
+
+\subsection{Credentials}
+
+R-GMA services permit or deny access to resources (in the general
+sense) to a user or another service, on the basis of
+\textit{credentials} held by that user or service. Credentials are
+extracted from the certificate used for authentication. Each
+credential has a name such as the {Distinguished Name} (DN) credential
+found in all certificates\footnote{The DN of host certificates
+  contains the host name.}.  The credentials found in the \textit{VOMS
+  proxy certificates} used by all EGEE services are:
+
+\begin{itemize}
+\item Membership of virtual organizations (VO);
+\item Membership of groups within a virtual organization (GROUP);
+\item Roles held within a virtual organization (ROLE);
+\end{itemize}
+
+and some, such as GROUP, may take more than one value.  All
+authorization rules are defined in terms of combinations of zero or
+more credentials.
+
+\subsection{Restricting Access to Columns (views)}
+\label{sec:SecurityViews}
+
+Views are defined in the schema as a subset of the columns of a table
+(the \textit{base table} of the view), created using the schema
+service's \texttt{createView} operation. Users can query views just as
+they would real tables, but they are read-only, so producers cannot
+publish to them, and they do not appear in the registry. Their purpose
+is to limit access to only certain columns of the base table: tuples
+read from a view are actually read from the base table, but the query
+is only allowed to include columns that form part of the
+view. Authorization rules for row access to views are defined exactly
+as for tables (see the next section) and completely replace the rules
+on the base table.
+
+\subsection{Authorizing Read/Write Access to Rows in Tables or Views}
+
+All consumers require read authorization to read tuples from views or
+tables in the virtual database and all producers (primary and
+secondary) require write authorization to publish tuples into tables
+in the virtual database.
+
+These authorization rules are stored in the schema; the user who
+creates the table or view sets the initial rules.
+
+The default rule is that no user is permitted any access to the table
+or view.  Rules are added to grant access only (not to deny it) and
+they are cumulative.  Read and write rules are formatted identically
+and have the form ``\textit{predicate : credentials : action}'', where
+the three clauses are defined as follows:
+
+\begin{description}
+
+\item[predicate] Defines the subset of rows of the table or view to
+  which this rule grants access. It is an SQL WHERE clause that
+  compares the values in specified columns with constants, other
+  columns or credential parameters (credential name in square
+  brackets, such as [DN]) that are replaced by the corresponding
+  credentials (or set of credentials) extracted from the user's
+  certificate when the rule is evaluated. The predicate expression is
+  restricted to the following operators: AND, OR, NOT, IN, \(=\),
+  LIKE, \(<>\), \(<\), \(>\) and IS NULL. This clause may be empty, in
+  which case the rule applies to all rows in the table.
+
+\item[credentials] Defines the set of credentials required for a user
+  to be granted access to the subset of rows defined by this rule. It
+  is a boolean combination of equality constraints of the form
+  \textit{[credential] = constant}. This clause may be empty, in which
+  case the rule applies to all authenticated users.
+
+\item[action] Defines what any matching user is allowed to do to the
+  subset of rows defined by this rule. The valid values are:
+  \textit{R} (read), \textit{W} (publish) or \textit{RW} (read and
+  publish). This clause must not be empty.
+
+\end{description}
+
+Some examples rules are:
+
+\begin{verbatim}
+WHERE Section = 'Marketing':[GROUP] = 'Marketing' OR [GROUP] = 'Management':RW
+\end{verbatim}
+
+that grants read-write access to any authenticated user with a GROUP
+credential of 'Marketing' or 'Management', to those rows that contain
+the value 'Marketing' in the 'Section' column;
+
+\begin{verbatim}
+WHERE Owner = [DN]::R
+\end{verbatim}
+
+that grants read-only access to any authenticated user, to those rows
+that contain the value of their DN credential in the 'Owner' column;
+
+\begin{verbatim}
+WHERE Group = [GROUP] OR Public = 'true'::R
+\end{verbatim}
+
+that grants read-only access to any authenticated user, to those rows
+that contains one of their GROUP credential values in the 'Group'
+column, or have a value of 'true' in the 'Public' column;
+
+\begin{verbatim}
+::R
+\end{verbatim}
+
+that grants read-only access to any authenticated user, to all rows in
+the table.
+
+\subsection{Controlling schema access}
+Also associated with each table are rules defining who can read, write (modify
+or delete) a table definition. These rules take the form: ``\textit{credentials
+: action}'' where credentials and action are defined as above. A call to
+getAllTables will only show those tables for which you have read access and
+information about a specific table also requires read access. 
+
+In addition there
+are rules included in the VDB definition that are independent of table. The most
+useful of these is to say who can create a table. These rules also contain
+(credential, action) pairs but the action now includes ``C'' to define who can
+create a table. The R-GMA setup script defines a local vdb with a name of
+DEFAULT. This has a rule giving CRW access to the DN of the person running the
+setup script. When creating a vdb you should consider whether or not to define a
+rule :CR allowing anyone to create a table or to read a table definition. The
+DEFAULT vdb has such a rule.
+
+When a table is created, if no schema access rule is provided then a rule of the form:
+\begin{verbatim}
+[DN] = <creators DN> : RW 
+\end{verbatim}
+is added to the table defintion to give the creator full control of the table
+defintion.
+
+Permission is granted if any rule in the VDB defintion or a table specific rule
+permits the action.
+
+\subsection{Updating the rules}
+The authorization rules may be updated at any time. There will be a short delay
+while the change is propagated to other servers and while the resources check
+for schema modifications.

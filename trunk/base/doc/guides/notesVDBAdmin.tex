@@ -1,0 +1,63 @@
+\section{Notes for VDB Administrators}
+
+\subsection{Creating a VDB}
+First identify the servers that will be used {--} they must all have
+this new version of the code (or a later one). Two or three of them
+should be registry instances and one the master schema. Try to choose
+machines on well run sites with reliable networking for the registry
+instances and the master schema. Choose a name for the VDB; ideally
+this name will be globally unique. A server cannot serve more than one
+VDB with a given name. Create a VDB configuration file using the
+\texttt{\textbf{rgma{}-editvdb}} tool. These are the basic commands
+needed to create a VDB file for three servers, NB all servers in a
+VDB need to be included:
+
+\begin{verbatim}
+set name myVdb-domain
+add host myhost1.domain.xx 8443 RS
+add host myhost2.domain.xx 8443 R
+add host myhost3.domain.x 8443
+add rule CR
+write
+\end{verbatim}
+
+When creating a vdb you should consider what rules to define.  In the case
+above the rule CR allows anyone to create a table or
+to read a table definition as no credentials have been specified. You may also
+wish to add a rule:
+
+\begin{verbatim}
+add rule W [DN] = <vdbAdminDN>
+\end{verbatim}
+
+where \verb/<vdbAdminDN>/ is the DN of someone who will be able to modify or
+delete all table defintions.
+
+This generates the configuration file and guarantees the correctness
+of the syntax. Identify a URL on a well maintained web server from
+which this configuration file can be downloaded {--} and install it there.
+
+To deploy a VDB get sysadmins at the required sites to configure their
+servers to allow your VDB, see Section \ref{sec:vdbConf}.
+
+\subsection{Maintaining a VDB}
+To modify the VDB subsequently edit the configuration file using
+\texttt{\textbf{rgma{}-editvdb}} adding, deleting or modifying hosts as
+required and make it available at the chosen URL. If a change is
+needed to the set of registries in use it is preferable to have some
+machines that remain in the set after making the change.
+
+To close down the VDB, stop making the configuration file available
+via the URL - and at some stage arrange to have any old vdb\_url files
+removed.
+
+Evidently there will be times, in particular when a VDB is first
+introduced, when some of the servers will not be available, and for a
+period when changes are made to the VDB definition servers may have a
+different versions of the configuration. The system has been designed
+to tolerate this.
+
+Changing master schema is potentially dangerous {--} the new master
+must have received all schema updates to avoid losing table
+definitions. If a freshly installed machine is defined to be the
+master schema it will have \textit{no} table definitions.

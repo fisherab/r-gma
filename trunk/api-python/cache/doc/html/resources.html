@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Resource Classes &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Service operations" href="service.html" />
+    <link rel="prev" title="Time Classes" href="time.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="service.html" title="Service operations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="time.html" title="Time Classes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="resource-classes">
+<h1>Resource Classes<a class="headerlink" href="#resource-classes" title="Permalink to this headline">¶</a></h1>
+<p>Producers and consumers are all resources.</p>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Resource">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Resource</tt><a class="headerlink" href="#rgma.Resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>A producer or consumer.</p>
+<dl class="method">
+<dt id="rgma.Resource.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Resource.close" title="Permalink to this definition">¶</a></dt>
+<dd>Closes the resource. The resource will no longer be available through this API and will be
+destroyed once it has finished interacting with other components. It is not an error if the
+resource does not exist.</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Resource.destroy">
+<tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Resource.destroy" title="Permalink to this definition">¶</a></dt>
+<dd>Closes and destroys the resource. The resource will no longer be available to any component.
+It is not an error if the resource does not exist.</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="resourceendpoint">
+<h2>ResourceEndpoint<a class="headerlink" href="#resourceendpoint" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.ResourceEndpoint">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">ResourceEndpoint</tt><big>(</big><em>urlString</em>, <em>resourceId</em><big>)</big><a class="headerlink" href="#rgma.ResourceEndpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>A resource endpoint contains a URL and a resource ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>urlString</em> (<cite>string</cite>) &#8211; the service URL</li>
+<li><em>resourceId</em> (<cite>int</cite>) &#8211; the resource identifier</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.ResourceEndpoint.getResourceId">
+<tt class="descname">getResourceId</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ResourceEndpoint.getResourceId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the resource identifier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">return the resourceId as an int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ResourceEndpoint.getUrlString">
+<tt class="descname">getUrlString</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ResourceEndpoint.getUrlString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the resource URL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the resource URL as a string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Resource Classes</a><ul>
+<li><a class="reference external" href="#resource">Resource</a></li>
+<li><a class="reference external" href="#resourceendpoint">ResourceEndpoint</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="time.html"
+                                  title="previous chapter">Time Classes</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="service.html"
+                                  title="next chapter">Service operations</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="service.html" title="Service operations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="time.html" title="Time Classes"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

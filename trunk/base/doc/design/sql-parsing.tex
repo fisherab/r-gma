@@ -1,0 +1,76 @@
+\section{SQL Parsing and Validation Subsystem}
+\label{sec:parsingAndValidationSubsystem}
+\index{Subsystem!Parsing and Validation}
+
+Packages: \texttt{org.glite.rgma.server.services.sql} and \texttt{org.glite.rgma.server.services.sql.parser}
+
+\subsection{SQL Parsing}
+
+SQL strings musct conform to the  R-GMA System
+Specification document.
+
+A recursive descent parser is generated from a grammar which is
+processed by JavaCC.
+
+The parsing subsystem contains a class for each different supported
+SQL statement.  Each class has a static parse() method using to create
+a statement object from an SQL String and setter/getter methods to
+access the components of the statement. In each case the parse method
+instantiates a JavaCC based parser with the statement to parse and
+returns the result which the JavaCC parser has built.
+
+In addition there are a number of utility classes for SQL constructs
+which are not statements in their own right but provide appropriate
+get and set methods.
+
+The supported SQL statements and their uses are:
+
+\begin{tabular}{l p{12cm}}
+
+SelectStatement &
+Represents all SELECT queries that the user can make on R-GMA \\[1mm]
+
+InsertStatement &
+Represents all INSERT statements that the user can pass to R-GMA\\[1mm]
+
+UpdateStatement &
+Represents all UPDATE statements that the system generates to 
+update Latest tables in the Tuple Store Database\\[1mm]
+
+CreateTableStatement &
+Represents all CREATE TABLE statements that the user can pass to R-GMA\\[1mm]
+
+CreateViewStatement &
+Represents all CREATE VIEW statements that the user can pass to R-GMA\\[1mm]
+
+CreateIndexStatement &
+Represents all CREATE INDEX statements that the user can pass to R-GMA\\[1mm]
+
+ProducerPredicate &
+Represents all producer predicates that the user can pass to R-GMA when
+declaring a table.  These are far simpler than the predicate/WHERE clause
+allowed within a SELECT statement\\[2mm]
+
+\end{tabular}
+
+
+\subsection{Schema Validation}
+
+A Validator class is provided to check that a SelectStatent is consistent
+with the schema. This is quite complex as a query can span more than
+one VDB.
+
+This class has a constructor taking the SelectStatement and table
+definitions from the schema. It has one operations: validate() to
+perform the validation. It checks that:
+
+\begin{itemize} 
+\item SELECT * is not used in conjunction with a join.
+\item all column names are only specified once (this is
+      necessary for the creation of temporary tables in one-time
+      queries and is not actually invalid SQL).
+\item all tables and columns referenced in SELECT, FROM
+      and WHERE exist in the schema tables specified.
+\item the types of expressions in the predicate match.
+\end{itemize}
+

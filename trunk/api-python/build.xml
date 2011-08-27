@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="api-python" default="install">
+
+	<property name="prefix" value="build/prefix" />
+	<property name="version" value="0.0.0" />
+	<fixcrlf srcdir="src/scripts"/>
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="${prefix}" />
+	</target>
+
+	<target name="install">
+
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts" />
+			<filterset>
+				<filter token="VERSION" value="${version}" />
+			</filterset>
+		</copy>
+
+		<chmod perm="755" dir="${prefix}/libexec/rgma-client-check/python/" includes="*" verbose="Yes" />
+
+		<copy toDir="${prefix}/share/doc/rgma-api-python">
+			<fileset file="LICENSE" />
+			<fileset file="RELEASE-NOTES" />
+			<fileset dir="cache/doc/" />
+		</copy>
+
+	</target>
+
+</project>

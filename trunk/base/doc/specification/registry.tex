@@ -1,0 +1,240 @@
+\section{Registry Service}\label{sec:Registry}\index{registry}
+\subsection{Description}
+
+There is exactly one registry per virtual database. It holds the
+details of all producers that are publishing to tables in the virtual
+database, and it also holds the details of continuous consumers who wish to be
+notified of changes to the list of producers. For reasons of resilience and
+scalability, multiple replicas of the registry can be created for each virtual
+database. Each replica exists as a Registry Instance in a Registry Service and
+is created by the service at the request of a user. A single Registry
+Service can host replicas from multiple virtual databases. The Registry Service
+also handles queries for registries that it is not hosting, by locating
+another Registry Service that is hosting a working replica of the requested
+registry and forwarding the query there. In this way, users, producer services
+and consumer services only ever need to contact their local Registry Service
+directly.
+
+The Registry Service is responsible for authenticating all users and services
+that connect to it, and for authorizing all operations and all requests to
+access the registries it is hosting, as specified in chapter \ref{sec:Security}.
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+
+\begin{method}{getAllProducersForTable}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:boolean canForward}{True if query can be forwarded.}
+\inpar{xsd:string tableName}{Table name.}
+\outhead{Tuple(0..*)}{}
+\outpar{xsd:string url}{Producer URL}
+\outpar{xsd:int connectionId}{Producer resource ID.}
+\outpar{xsd:boolean isSecondaryProducer}{If producer is secondary.}     
+\outpar{xsd:boolean isContinuous}{If producer supports continuous queries.}  
+\outpar{xsd:boolean isStatic}{If producer supports static queries.}     	
+\outpar{xsd:boolean isHistory}{If producer supports history queries.}  
+\outpar{xsd:boolean isLatest}{If producer supports latest queries.}  
+\outpar{xsd:string predicate}{Predicate associated with the producer.}
+\outpar{xsd:int hrpSec}{History Retention Period in seconds} 	
+\desc Returns an unmediated list of all producers registered for the specified
+tables, with their connection details and producer types (used by the R-GMA
+Browser). Processed locally if possible (see \ref {sec:RegistryForwarding}).\\
+\end{method}
+
+See also the operations common to all services: getProperty~\ref{op:getProperty}.
+
+
+\subsubsection{System Interface}
+
+
+getURL(), getResourceID(), isSecondary(), isContinuous(), isStatic(),
+isHistory(),  isLatest(), getPredicate(),getHistoryRetentionPeriod(), getVdbName(), getTableName()
+				
+\begin{method}{getMatchingProducersForTables}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:boolean canForward}{True if query can be forwarded.}
+\inpar{xsd:string(1..*) tables}{Table name}
+\inpar{xsd:string predicate}{Predicate associated with the
+consumer.}       
+\inpar{xsd:string queryType}{Consumer's Query type.}
+\inpar{xsd:int(0..1) timeIntervalSec}{Time interval to look back into the past
+for matching tuples.}
+\inpar{xsd:boolean isSecondaryConsumer}{True for secondary consumer (i.e. consumer part of a secondary
+producer). Only specified if queryType is continuous.}
+\inpar{xsd:string url}{URL of consumer. Only specified if queryType is
+continuous.}
+\inpar{xsd:int resourceId}{Resource id of consumer. Only specified if queryType
+is continuous.}
+\inpar{xsd:int terminationIntervalSec}{Consumer's termination interval in seconds.}
+\outhead{Tuple(0..*)}{}
+\outpar{xsd:string url}{Producer URL}
+\outpar{xsd:int connectionId}{Producer resource ID.}
+\outpar{xsd:boolean isSecondaryProducer}{If producer is secondary.}     
+\outpar{xsd:boolean isContinuous}{If producer supports continuous queries.}  
+\outpar{xsd:boolean isStatic}{If producer supports static queries.}     	
+\outpar{xsd:boolean isHistory}{If producer supports history queries.}  
+\outpar{xsd:boolean isLatest}{If producer supports latest queries.}  
+\outpar{xsd:string predicate}{Predicate associated with the producer.}
+\outpar{xsd:int hrpSec}{History Retention Period in seconds}
+\outpar{xsd:string tableName}{Table name without VDB prefix.}
+\outpar{xsd:string vdbName}{Virtual database name.}
+\desc Returns a list of all producer-table entries from the registry that match
+the Consumer's query predicate, for any of the listed tables. This operation is
+used by the mediator in the consumer service. Continuous
+consumers are also registered (or updated if they are already registered)
+by this call so the registry can pass their details to any new, relevant
+producers. See
+\ref{sec:RegistryRegistering} for a description of the termination interval.
+The last three parameters: \textit{isSecondary}, \textit{consumer} and
+\textit{terminationIntervalSec}
+are only present for continuous consumers.
+Processed locally if possible (see \ref {sec:RegistryForwarding}).
+\end{method}
+
+\begin{method}{registerProducerTable}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:boolean canForward}{True if query can be forwarded.}
+\inpar{xsd:string url}{Producer URL}
+\inpar{xsd:int id}{Producer resource ID.}
+\inpar{xsd:string tableName}{Table name.}
+\inpar{xsd:string predicate}{Producer's predicate.}
+\inpar{xsd:boolean isContinuous}{If producer supports continuous queries.}  
+\inpar{xsd:boolean isHistory}{If producer supports history queries.}  
+\inpar{xsd:boolean isLatest}{If producer supports latest queries.}  
+\inpar{xsd:boolean isStatic}{If producer supports static queries.}
+\inpar{xsd:boolean isSecondaryProducer}{If producer is secondary.}
+\inpar{xsd:int hrpSec}{Table's History Retention Period in seconds.}
+\inpar{xsd:int terminationIntervalSec}{Producer's termination interval in
+seconds.}
+\outhead{Tuple(0..*)}{}
+\outpar{xsd:string url}{Consumer URL}
+\outpar{xsd:int id}{Consumer resource ID.}
+\desc Adds an entry to the Registry for a producer containing the details passed
+to this operation or updates them if it is already registered. The producer
+service
+will already have validated the predicate before calling this operation.
+If the new producer supports continuous queries and there are any registered
+continuous consumers to which this producer is relevant (by comparison of
+their predicates), then this call returns a list so the producer can
+send an \textit{addProducer} notification to each of them (the list will be
+empty for non-continuous producers).
+The \textit{retentionPeriod} should reflect the actual history
+available from the producer (which may be very short initially) and should
+be updated in subsequent calls to this operation. See
+\ref{sec:RegistryRegistering} for a description of the
+termination interval.
+Processed locally if possible (see \ref {sec:RegistryForwarding}).
+\end{method}
+
+\begin{method}{unregisterContinuousConsumer}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:boolean canForward}{True if query can be forwarded.}
+\inpar{xsd:string url}{Consumer URL}
+\inpar{xsd:int id}{Consumer ID.}
+\desc Removes a Continuous consumer's entry from the Registry. The Consumer
+Service is expected to notify all producers to which the consumer has subscribed that
+it is closing - the Registry does not do this.
+Processed locally if possible (see \ref {sec:RegistryForwarding}).
+\end{method}
+
+\begin{method}{unregisterProducerTable}
+\inpar{xsd:string vdbName}{Virtual database name.}
+\inpar{xsd:boolean canForward}{True if query can be forwarded.}
+\inpar{xsd:string tableName}{Table name.}
+\inpar{xsd:string url}{Producer's URL}
+\inpar{xsd:int id}{Producer's ID.}
+\desc Removes a producer's entry for a particular table from the Registry.
+Processed locally if possible (see \ref {sec:RegistryForwarding}).
+\end{method}
+
+\begin{method}{addReplica}
+\inpar{xsd:string replica}{String with replication message for a vdb.}
+\desc Applies updates to the Registry with data from another replica. See section
+\ref{sec:RegistryReplication} for details. Always processed locally.
+\end{method}
+
+\begin{method}[registry]{ping}
+\inpar{xsd:int vdbName}{Virtual database name}
+\OK
+\desc
+Checks if a registry instance is still alive (and throws an exception
+if it is not). Used by the Registry Service to locate the ``closest''
+working replica for a particular virtual database. Has no side-effects
+on the registry instance.  Always processed locally.
+\end{method}
+
+
+\subsection{Details}
+\subsubsection{Registering and unregistering resources}\label{sec:RegistryRegistering}
+
+Resources are registered when a service calls the
+\textit{registerProducerTable} and \textit{getMatchingProducersForTables}
+operations, and are unregistered when a service calls the
+\textit{unregisterProducerTable} or
+\textit{unregisterContinuousConsumer} operations. The registration calls must
+be repeated periodically with the interval between calls not exceeding the
+termination interval, otherwise the registry will automatically unregister the
+resource. If the re-registration arrives late, it will simply put the entry
+back as if it was a new entry. The registry instance which hosts the replica
+notes the updates it receives and uses these to generate an \textit{addReplica}
+call to send updates to all other registries it knows about.
+
+\subsubsection{Forwarding operations}\label{sec:RegistryForwarding}\index{registry fowarding}
+
+Most registry operations specify the name of the virtual database for
+which they are intended. If the Registry Service is hosting a registry
+replica for that virtual database, it will process the operation
+locally. If it is not, it will attempt to locate another Registry
+Service that is hosting a replica, then check that the replica is
+still working (trying a different service if it is not), before
+forwarding the operation to that service and returning the
+results. This forwarding can be prevented by setting the
+\textit{canForward} to \textit{false} in those operations that support
+it: this is meant for use by Registry Services only, to prevent an
+operation from being forwarded more than once, and is hidden by the
+User APIs. How the Registry Service obtains URLs of other Registry
+Services and lists of the virtual databases for which they are hosting
+replicas, is described in \ref{sec:BackgroundBootstrapping}. The rules
+about when to switch from one replica to another are given in the next
+section.
+
+\subsubsection{Replication}\label{sec:RegistryReplication}\index{registry replication}
+
+When a Registry Service receives a request intended for a replica in a
+virtual database that it has not contacted before, it chooses the
+``best'' replica in some implementation-defined way that is likely to
+be based on round-trip times for calls to \textit{ping} on each
+replica. It then uses this replica for all subsequent requests for
+that virtual database, until it is forced to switch either because the
+replica fails, or it discovers that new replicas have been added
+(e.g. for load balancing).
+
+The Registry Service runs a replication cycle, with a
+site-configurable frequency, for each replica that it is hosting
+locally. At each cycle, it sends updates made to the replica to all
+other replicas in the same virtual database, by calling
+\textit{addReplica}. As far as possible, change-only updates are used
+to minimize the size of the replication messages.
+
+A new registry replica will be empty initially. A restarted replica
+will reload any entries it had before. In both cases, the replica will
+wait until one full replication cycle has been attempted before it
+will start servicing queries (regardless of whether or not it has
+heard from all other replicas).
+
+Since replicas will become inconsistent with each other between
+replication cycles, all R-GMA services must tolerate a registry
+informing them about producer and consumer resources that no longer
+exist, or failing to inform them about ones about which it does not
+yet know.
+
+\subsubsection{Registry Database}\index{registry database}
+
+The Registry maintains two lists, one containing an entry for each table of
+each producer publishing to the virtual database, and one containing an entry
+for each continuous consumer querying the virtual database. How these are
+stored is implementation dependent, but they're likely to be database tables.
+It is a requirement that their contents can survive the Registry
+Service being restarted. The lists need to contain just sufficient details
+for the Registry Service operations to be supported.

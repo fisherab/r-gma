@@ -1,0 +1,26 @@
+\subsection {Alter Table}
+
+If the schema is modified resources using it will close down and send a temporary
+exception so that the client is unaffected. Any resource will then be recreated
+and if it needs a named tuplestore will find that the schema has changed and
+will modify the stored table to match. 
+
+If a table is dropped and recreated then the application code may find the table
+missing and get a permanent exception .
+
+Not all possible schema changes can be
+carried out so an ALTER TABLE call is provided to support only those changes
+that can be made reliably and to ensure that at all times the table exists andso only a temporary exception will be generated as described above.
+If a named tuplestore cannot make the change correctly to the stored data it
+will simply destroy the old table and create a new one. This will never happen if the
+ALTER TABLE operation on the schema is used. Changes to the columns of the
+primary key or the addition of a "not null" column are not permitted. Types of
+columns may not be changed except between CHAR and VARCHAR or to increase the
+size of CHAR or VARCHAR. If a column is removed - it will be removed from the
+database table. If a column is added - it will be added and set to null for all
+existing tuples.
+
+The ALTER TABLE and ALTER VIEW facilities are not provided as part of the API
+but only from the command line tool.
+
+

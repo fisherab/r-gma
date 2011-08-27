@@ -1,0 +1,47 @@
+Line 3 includes the header file for the R-GMA C API.
+
+Lines 9--10 define the SQL query
+
+Lines 11-16 try to create the consumer with a continuous query of \texttt{SELECT
+userId, aString, aReal, anInt MeasurementTime FROM default.userTable}. In this case we have a
+continuous query which will start with available published tuples from
+the last 10 minutes (600 seconds) and receive any new tuples published. The
+parameter with a value of 300 ensures that the query stops after 300 seconds.
+
+Lines 17--38  retrieve all of the results for the query. While there is
+data available it will loop without delay. If there is no data
+currently available it will sleep for 2 seconds before trying
+\texttt{pop} again. The 2000 is the maximum number of tuples to be
+returned at once. Note the freeing of the tuple set to avoid memeory leaks.
+
+Line 39 closes the consumer and frees memory. The exception is not checked as all
+that could be done would be to print a message and the memory from any created
+exception is not a concern as the program will exit.
+
+\subsubsection {One-off Queries}
+For one-off queries, either history or latest, it is preferable to
+check to see if the query aborted. This can be achieved by looking to
+see if \texttt{RGMAConsumer\_hasAborted()} is true after either kind of
+consumer loop.
+
+This can be the result of hitting the timeout (300 seconds in this
+case) or making an explicit \texttt{RGMAConsumer\_abort()} call. Note that
+continuous queries \emph{only} stop by one of these means so there is
+no point in checking in that case.
+
+\subsubsection{Resilient Consumer Example}
+This example illustrates how to write a resilient consumer according
+to the recommendations in section \ref{sec:advice}.
+The pattern of the code is very similar to the earlier resilient primary
+producer example.
+
+\input{ResilientConsumer-c}
+
+Lines 10--11 define the SQL query.
+
+Lines 12--27 loop until the consumer creation is succesful or creates a
+permanent exception.
+
+Lines 28--56 loop popping data and printing it out. If tuples are present they
+are printed out otherwise there is a two second pause. Warnings are
+printed whether or not tuples are present. Exceptions are handled in the usualway.

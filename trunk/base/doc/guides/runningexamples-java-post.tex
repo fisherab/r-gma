@@ -1,0 +1,37 @@
+The CLASSPATH for the example needs to contain the following JAR
+files:
+
+\begin{verbatim}
+ $RGMA_HOME/share/java/glite-rgma-api-java.jar
+ $GLITE_LOCATION/share/java/glite-security-trustmanager.jar
+ $GLITE_LOCATION/share/java/glite-security-util-java.jar
+ /usr/share/java/bcprov.jar 
+ /usr/share/java/log4j.jar
+\end{verbatim}
+
+The first JAR file contains the R-GMA API, the next three contain the
+security mechanism and the last one is for logging.
+
+
+To compile an example enter:
+\begin{verbatim}
+javac -classpath $CLASSPATH XXXExample.java
+\end{verbatim}
+
+To run an example with a Grid proxy certificate, you need to enter:
+
+\begin{verbatim}
+ java -DRGMA_HOME=$RGMA_HOME -DX509_USER_PROXY=$X509_USER_PROXY \
+   XXXExample
+\end{verbatim}
+
+or to run it with a trust file, you need to enter:
+
+\begin{verbatim}
+ java -DRGMA_HOME=$RGMA_HOME -DTRUSTFILE=$TRUSTFILE XXXExample
+\end{verbatim}
+
+Substitute \texttt{XXX} in the above code with the name of the
+example, i.e. \texttt{PrimaryProducer} or \texttt{Consumer} etc. For
+the primary producer examples you will need to include the argument
+\verb$<userId>$.

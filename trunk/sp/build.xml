@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+		Copyright (c) 2004 on behalf of the EU EGEE Project
+	-->
+
+<project name="base" default="install">
+
+	<property name="prefix" value="build/prefix" />
+
+	<target name="install">
+
+		<fixcrlf srcdir="src/scripts" />
+		
+		<copy toDir="${prefix}/share/doc/rgma-sp">
+			<fileset file="RELEASE-NOTES" />
+			<fileset file="LICENSE" />
+		</copy>
+
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts" />
+		</copy>
+
+		<chmod perm="755" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+
+	</target>
+
+	<target name="clean">
+		<delete dir="${prefix}" />
+	</target>
+
+</project>

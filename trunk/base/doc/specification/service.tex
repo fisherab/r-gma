@@ -1,0 +1,18 @@
+\section{Service Operations}\label{sec:Service}\index{service operations}
+
+Operations defined here are are common to all services.
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+
+\begin{method}{getProperty}
+\inpar{xsd:string name}{Property name.}
+\inpar{xsd:string(0..1) parameter }{Property parameter.}
+\outhead{xml:Any}{Property value.}
+\desc Returns the current value of the requested service property. The appropriate
+contents of \textit{parameter} depend on the property name. The list of
+service properties is extensible and subject to change without warning.
+\end{method}
+
+\subsubsection{System Interface}

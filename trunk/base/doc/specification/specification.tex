@@ -1,0 +1,82 @@
+\documentclass{egee-hacked}
+\usepackage{comment}
+\usepackage{longtable}
+\usepackage{makeidx}
+
+\newenvironment{method}[2][]{{\vspace{4mm}\sf #2}\index{operation!
+#2}\label{op:#1#2}
+\par\nopagebreak\begin{tabular}{p{5mm}p{3mm}p{70mm}p{75mm}}}{\end{tabular}\\[2mm]}
+\newcommand{\inpar}[2]{&$\Rightarrow$&\sf #1&#2\\}
+\newcommand{\outhead}[2]{&$\Leftarrow$&\sf #1&#2\\}
+\newcommand{\outpar}[2]{&&\sf #1&#2\\}
+\newcommand{\faults}{}
+\newcommand{\desc}{\end{tabular}\par\begin{tabular}{p{5mm}p{150mm}}
+\\[-3mm] &} 
+\newcommand{\OK}{
+	\outhead{Tuple(1..1)}{}
+	\outpar{xsd:string status}{OK}
+}
+
+\makeindex
+
+\title{R-GMA System Specification Version}
+\Version{6.2.0}
+\Date{\today}
+\Dissemination{PUBLIC}
+% \DocumentLink{http://edms.cern.ch/document/490223/}
+
+\Abstract{
+This document presents the System Specification for the Information and 
+Monitoring Services middleware component (R-GMA) in sufficient detail to 
+support design verification, detailed design and test specification. It 
+specifies precisely the interfaces and externally visible behaviour of all the 
+R-GMA services.
+
+The document is structured with a single chapter containing a technical
+overview of the system, followed by a separate chapter for each of
+the R-GMA services, with a standard set of headings in each of these chapters.
+Chapters on security, SQL language support, service data types and
+service parameters complete the document.}
+
+\begin{document}
+
+\input{frontmatter}
+
+\newpage
+\tableofcontents
+
+\newpage
+\input{intro}
+\newpage
+\input{messages}
+\newpage
+\input{primaryproducer}
+\newpage
+\input{secondaryproducer}
+\newpage
+\input{ondemandproducer}
+\newpage
+\input{producer}
+\newpage
+\input{consumer}
+\newpage
+\input{resource}
+\newpage
+\input{registry}
+\newpage
+\input{schema}
+\newpage
+\input{service}
+\newpage
+\input{rgmaservice}
+\newpage
+\input{security}
+\newpage
+\input{sql}
+\newpage
+\printindex
+%\newpage
+%\bibliographystyle{plain}
+%\bibliography{jra1-uk}
+
+\end{document}

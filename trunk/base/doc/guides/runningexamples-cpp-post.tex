@@ -1,0 +1,14 @@
+To compile the example with gcc you might enter:
+ 
+\begin{verbatim}
+
+g++ XXXExample.cpp  -o XXXExample \
+    -I$RGMA_HOME/include \
+    -L$RGMA_HOME/lib -lglite-rgma-cpp -lssl
+   
+\end{verbatim}
+
+Substitute \texttt{XXX} in the above code with the name of the example, i.e.
+PrimaryProducer or Consumer etc. You will need to add
+\verb!$RGMA_HOME!\texttt{/lib} to \verb!$LD!\texttt{/LIBRARY/PATH} in order to
+run the example (to find the shared libraries).

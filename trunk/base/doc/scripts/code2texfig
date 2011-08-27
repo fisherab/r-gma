@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys,os
+
+infile = sys.argv[1]
+outfile = sys.argv[2]
+
+code = file(infile)
+lines = code.readlines()
+code.close()
+
+tex = file(outfile,"w")
+
+linenum = 0
+plinenum = 0
+for line in lines:
+    tex.write(r"\par\verb£")
+    if not line.isspace():
+        tex.write('%3d   %s' % (plinenum ,line[:-1]))
+    tex.write(r"£")
+    if linenum != len(lines) -1:
+        tex.write(r"\vspace{-2mm}")
+    tex.write("\n")    
+    linenum = linenum + 1
+    if not line.isspace():plinenum = plinenum + 1
+tex.write(" \n")
+tex.close()
+print "code2texfig to", outfile    

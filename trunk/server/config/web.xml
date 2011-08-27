@@ -1,0 +1,57 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+
+<web-app>
+	<context-param>
+		<param-name>RGMA_HOME</param-name>
+		<param-value>/opt/glite</param-value>
+		<description>
+			The root path of the RGMA installation. The server config
+			file is assumed to be installed in
+			$RGMA_HOME/etc/rgma-server/rgma-server.props
+		</description>
+	</context-param>
+
+	<servlet>
+		<servlet-name>RGMAServlet</servlet-name>
+		<servlet-class>
+			org.glite.rgma.server.servlets.RGMAServlet
+		</servlet-class>
+		<load-on-startup>40</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/RGMAService/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/SecondaryProducerServlet/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/OnDemandProducerServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/ConsumerServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/PrimaryProducerServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/RegistryServlet/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>RGMAServlet</servlet-name>
+		<url-pattern>/SchemaServlet/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

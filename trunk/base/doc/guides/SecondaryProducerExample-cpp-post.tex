@@ -1,0 +1,44 @@
+Lines 0--8 are the various \texttt{include} statements.
+
+Lines 9--15 are a set of \texttt{using} statements to avoid clutter
+in the code.
+
+Line 18 set up initial state for the secondary producer.
+
+Lines 21--23 define the parameters and create the secondary
+producer. In this case we have specified a logical database
+(cppExample) providing support for latest queries.
+
+Line 24--26 declare a table that the secondary producer will deal
+with. The predicate (line 24) is an empty string meaning that this
+secondary producer will collect and republish the whole table. The
+history retention period is set to 2 hours. This means that tuples
+will be available until they are 2 hours old - these tuples will be
+made available to continuous queries. In addition tuples will be
+available for latest queries. The latest retention period is a
+property of the individual tuple as defined at the primary producer.
+
+Line 27 obtain the termination interval from the R-GMA server.
+
+Lines 28--32 keep the secondary producer alive. We must issue
+an \texttt{showSignOfLife} call more often than the termination
+interval. In this case the sleep is for one third of the termination
+interval. It is possible that the \texttt{showSignOfLife} call may
+fail if it is unable to contact the service, or the service is unable
+to locate the remote resource. In this case the loop will be exited.
+
+Lines 33--41 report any exceptions that may occur.
+
+Lines 42--51 shuts down the secondary producer.
+
+Lines 52--53 deletes the secondary producer.
+
+N.B. A user can only have one producer using a specific storage
+location at a time.
+
+Notice that if the secondary producer does fail it could be one third
+of the termination interval before the program detects this and exits,
+so you need to set the retention period and sleep parameter according
+to your needs.
+
+\input{disconnectedSP}

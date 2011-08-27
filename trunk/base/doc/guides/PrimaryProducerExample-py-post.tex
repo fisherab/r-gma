@@ -1,0 +1,53 @@
+Line 2 imports the rgma library. It must be imported
+to make any use of the R-GMA facilities.
+
+Line 7 is the start of a try block. All the effective code is within
+this try block.
+
+Lines 8--9 create a producer with memory storage and able to support
+continuous queries.
+
+Lines 10--14 define the predicate and a pair of retention periods (60
+minutes in each case) and then declare the intention of publishing to
+a table called \texttt{default.userTable}. A producer is able to
+publish to more than one table.
+
+Lines 15--18 build an SQL insert statement and then call the insert
+method of the primary producer with that SQL statement as an argument.
+
+Line 19 closes the producer.
+
+Lines 20--22 report any exceptions that may occur.
+
+\subsubsection{Resilient Primary Producer Example}
+
+This example illustrates how to write a resilient producer according
+to the recommendations in section \ref{sec:advice}.
+The Primary Producer publishes information periodically every 30
+seconds. If there is a temporary exception it retries
+after one minute but for a permanent exception it exits. 
+
+\input{ResilientPrimaryProducer-py}
+
+Line 7 is the start of a try block that will catch all permanent
+exceptions from R-GMA.
+
+Lines 8--16 create a new Primary Producer. If there is a temporary exception
+the code waits for a minute before retrying.
+
+Lines 17--19 set values for the predicate and retention periods to be passed to
+the declare table call.
+
+Lines 20--31 declare the default.userTable. As before if there is a temporary exception
+the code waits for a minute before retrying.
+
+Line 32 initialises the data value that is going to be inserted into
+each tuple.
+
+Lines 33--46 loops forever - each iteration will insert a new
+tuple and sleep for 30 seconds. In our example tuples contain the userId and the
+current value of the \texttt{data} variable that gets incremented on each successful
+iteration of the loop. If a temporary exception occurs the data variable is not
+incremented but there is a one minute sleep before continuing around the loop. 
+
+Lines 47--49 deal with any permanent exceptions

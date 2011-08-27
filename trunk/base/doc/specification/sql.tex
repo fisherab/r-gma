@@ -1,0 +1,281 @@
+\section{SQL In R-GMA}\label{sec:SQL}\index{SQL}
+
+R-GMA virtual databases are queried and managed using SQL. It is used
+for creating and dropping tables, views and indexes, defining
+producers' predicates, inserting tuples, and querying the virtual
+database.  All SQL statements are parsed for security and validation
+purposes and are never simply forwarded to an underlying database for
+execution.
+
+R-GMA aims to be fully compatible with SQL92, but it does not claim
+compliance.  As in SQL92, SQL keywords are not case sensitive in
+R-GMA.
+
+\subsection{Character sets}\label{sec:SQLCharacterSets}\index{character set}
+
+R-GMA only supports the ASCII character set for all character data
+passed to its services (this includes table, column, index and view
+names and tuple data). The collation sequence used in consumer queries
+is the default collation sequence of the underlying database for the ASCII
+character set.
+
+\subsection{Naming tables, columns, indexes and views}\label{sec:SQLNaming}\index{naming rules}
+
+For compatibility with SQL92, SQL identifiers (table names, column
+names, index names and view names) defined in an R-GMA schema must
+consists of at most 128 upper or lower case letters, digits or
+embedded (not leading or trailing) underscores, and must begin with a
+letter. Identifiers beginning with \textit{Rgma} are reserved for use
+by R-GMA in addition to all names reserved by SQL92. R-GMA stores
+identifiers in their original case, but maps all identifiers to upper
+case for matching purposes, so you may not, for example, have two
+table names in the same schema that differ only in case.
+
+Virtual database names (used as prefixes to table and view names) also
+conform to these rules, except that they are allowed to include
+embedded dots.
+
+\subsection{Creating Tables}\label{sec:SQLCreateTable}\index{create table}
+
+Tables are created in the virtual database by calling the Schema's
+\textit{createTable} operation and passing an SQL CREATE TABLE statement
+conforming to the following specification:
+
+\begin{quote}CREATE TABLE \textit{table-name} (\textit{column-name}
+\textit{column-type} [\textit{column-qualifier}], \ldots)
+\end{quote}
+
+where \textit{table-name} is a unique table name, \textit{column-name}
+is a column name and \textit{column-type} is one of the data type
+names listed below. The optional \textit{column-qualifier} can be
+either \textit{NOT NULL} indicating that NULL values cannot be
+inserted to the column, or \textit{PRIMARY KEY} indicating that the
+column forms part of the primary key for the table (and implies
+\textit{NOT NULL}). The primary key can also be defined by appending
+an expression of the following form to the end of the column list.
+
+\begin{quote}
+PRIMARY KEY(\textit{column-name}, \ldots)
+\end{quote}
+
+The primary key is discussed further in
+\ref{sec:BackgroundTupleManagement}.  Tables can be dropped using the
+\textit{dropTable}\index{drop table} operation.
+
+\subsection{Data Types Supported}\label{sec:SQLDataTypes}
+
+R-GMA supports the following data types\index{data type}:
+
+\begin{itemize}
+\item INTEGER (signed integer capable of being stored in Java \textit{int} (32-bit two's complement) without loss of precision)
+\item REAL (floating point number capable of being stored in Java \textit{float} (32-bit IEEE 754) without loss of precision)
+\item DOUBLE PRECISION (floating point number capable of being stored in Java \textit{double} (64-bit IEEE 754) without loss of precision)
+\item DATE (Date string in the format 'YYYY-MM-DD')
+\item TIME(\textit{n}) (UTC time string in the format 'hh:mm:s[.s]', where '.s' means between zero and \textit{n} decimal places; \textit{n} is at most 9 and defaults to 0; leap seconds (60 or 61) are permitted)
+\item TIMESTAMP(\textit{n}) (UTC timestamp string in the format 'YYYY-MM-DD hh:mm:s[.s]', where the date part is as in DATE and the time part is as in TIME)
+\item CHAR(\textit{n}) (character string of fixed length \textit{n} where \textit{n} is greater than zero and defaults to 1)
+\item VARCHAR(\textit{n}) (character string of variable length up to
+\textit{n}, where \textit{n} is greater than zero and has no default)
+\end{itemize}
+
+For compatibility with SQL92, R-GMA permits the keywords DATE, TIME and
+TIMESTAMP to appear before literals of those types, but it does not require
+them.
+
+These are the only type names that may appear in a CREATE TABLE statement and
+they are the only type names that will appear in the column metadata of a
+result set. Producer Services must guarantee that they will support the full
+range of each column type (and the full length of string types) in any table
+that they publish, or they must fail the call to \textit{declareTable}.
+
+Null values are represented by the unquoted, case-insensitive word
+NULL\index{NULL}: empty strings are \textit{not} considered to be NULL
+values.  Character strings are delimited by single quotes only, and
+single quotes can only be embedded in them by duplicating them.
+Timestamps inserted with more precision than a table supports will be
+rounded to the supported precision. Floating point values may be
+represented using decimal (e.g. 1.2) or scientific notation
+(e.g. 1.2E3 or 1.2e3, where the exponent may be positive or negative).
+Floating point values inserted into columns of type INTEGER will be 
+truncated at the decimal point.
+
+\subsection{Creating Indexes}\label{sec:SQLCreateIndex}\index{create index}
+
+Indexes are created in the virtual database by calling the Schema's
+\textit{createIndex} operation and passing an SQL CREATE INDEX
+statement, conforming to the following specification:
+
+\begin{quote}
+CREATE INDEX \textit{index-name} ON \textit{table-name}
+(\textit{column-name}, \ldots)
+\end{quote}
+
+where \textit{index-name} is a unique index name, \textit{table-name}
+is the table to be indexed and \textit{column-name} is one of the
+columns to be indexed. Indexes can be dropped using the
+\textit{dropIndex} operation. Producer Service implementations are encouraged
+but not obliged to respect table indexes.
+
+\subsection{Creating Views}\label{sec:SQLCreateView}
+
+Views are created in the virtual database by calling the Schema's
+\textit{createView} operation and passing an SQL CREATE VIEW statement,
+conforming to the following specification:
+
+\begin{quote}
+CREATE VIEW \textit{view-name} AS SELECT \textit{column-name}, \ldots
+FROM \textit{table-name}\end{quote}
+
+where \textit{view-name} is the view name, \textit{column-name}
+is one of the columns in the view and \textit{table-name} is the table
+on which to create the view. The view name must not be the same as any other
+view name or table name in the schema. R-GMA only supports a column list, one
+table and no predicate in a view definition.  Views can be dropped
+using the \textit{dropView} operation. The role of views in R-GMA is explained
+in \ref{sec:SecurityViews}.
+
+\subsection{Inserting Tuples}\label{sec:SQLInsert}\index{insert}
+
+The Primary Producer's \textit{insert} operation allows tuples to be inserted
+into the virtual database. It takes an SQL INSERT statement conforming to
+the following specification:
+
+\begin{quote}
+INSERT INTO \textit{table-name} (\textit{column-name}, \ldots) VALUES
+(\textit{value}, \ldots)
+\end{quote}
+
+where \textit{table-name} is the table name, \textit{column-name} is a
+column name and \textit{value} is its corresponding value, formatted
+according to the rules in section \ref{sec:SQLDataTypes}. The table
+name must be be prefixed by a virtual database name, separated
+from the table name by a dot.
+
+\subsection{Producer Predicates}\label{sec:SQLPredicates}\index{producer predicate}\index{predicate!producer|see{producer predicate}}
+
+When a producer registers its intention to publish to a table in the
+virtual database, it must specify a predicate that declares the subset
+of the table to which it will publish tuples. This may be an empty
+string (indicating the whole table) or an SQL WHERE clause. To
+simplify mediation, it is limited to a union of column equality
+constraints, like this\footnote{It is intended to extend R-GMA to
+support any predicate involving columns and constants in disjunctive
+normal form and to support string ranges (such as ``column $>$ 'A' ''
+and ``column in ('A', ...)'').}:
+
+\begin{quote}
+WHERE \textit{column} = \textit{constant} AND
+                   \textit{column} = \textit{constant} AND ...
+\end{quote}
+
+Note that a Primary or On-demand Producer's predicate only limits the
+tuples it can publish; it does \textit{not} mean that it can be used
+as a single source for tuples matching that predicate. Conversely, by
+construction, a Secondary Producer \textit{can} be used as a single
+source for tuples matching its predicate.
+
+\subsection{Consumer Queries}\label{sec:SQLSelect}
+
+Users query the virtual database by creating a consumer using the
+Consumer Service's \textit{createConsumer} operation and passing an
+SQL SELECT statement.
+
+For mediation purposes, R-GMA defines two classes of query:
+\textit{simple}\index{simple query}\index{query!simple|see{simple
+query}} and \textit{complex}\index{complex
+query}\index{query!complex|see{complex query}}. Which class of query
+is supported at any given time depends on the query type
+(\textit{continuous}, \textit{latest}, \textit{history} and
+\textit{static}) and the producers available at the time.
+
+\subsubsection{Complex Queries}\label{sec:SQLComplexQueries}
+
+R-GMA supports a subset of SQL92 in the SQL SELECT queries of its consumers.
+The BNF defining the set of supported queries is given below:
+
+\begin{verbatim}
+SelectStatement    ::= SelectWithoutOrder [OrderByClause]
+SelectWithoutOrder ::= "SELECT" ["ALL"|"DISTINCT"] SelectList FromClause
+                       [WhereClause] [GroupByClause] ["HAVING" SQLExpression]
+WhereClause        ::= "WHERE" SQLExpression
+GroupByClause      ::= "GROUP" "BY" SQLExpressionList
+OrderByClause      ::= "ORDER" "BY" SQLSimpleExpression ["ASC"|"DESC"]
+                       ("," SQLSimpleExpression ["ASC"|"DESC"])*
+SelectList         ::= "*" | "COUNT(*)" | SelectItem ("," SelectItem)* |
+                       "COUNT(" ["ALL"|"DISTINCT"] ObjectName ")"
+SelectItem         ::= (SQLSimpleExpression | TableColumn) [ ["AS"] Identifier ]
+FromClause         ::= "FROM" TableReference (, TableReference)*
+TableReference     ::= "(" TableReference ")" |
+                       RGMATableName [ ["AS"] Identifier ] JoinedTable
+RGMATableName      ::= [ ( "{" ObjectName (, ObjectName)* "}" | ObjectName ) "." ] ObjectName
+JoinedTable        ::= ["NATURAL"] ("INNER"|OuterJoinType ["OUTER"]|"UNION") "JOIN"
+                       TableReference [JoinSpecification]
+OuterJoinType      ::= "LEFT"|"RIGHT"|"FULL"
+JoinSpecification  ::= "ON" SQLExpression |
+                       "USING" "(" ObjectName ("," ObjectName)* ")"
+SQLExpressionList  ::= SQLSimpleExpression ("," SQLSimpleExpression)*
+
+SQLExpression is a boolean expression involving any of: 
+    OR AND NOT IN BETWEEN LIKE IS NULL <SQLSimpleExpression>
+
+SQLSimpleExpression is an expression involving any of: 
+    + - || * / ** NULL COUNT SUM AVG MAX MIN <column-name> <number> <string>
+\end{verbatim}
+
+Table names anywhere in the SELECT statement must be prefixed by a
+virtual database name, separated from the table name by a dot
+(as in \textit{DB.Table}), in order to indicate which virtual database contains
+the required table. Joins across multiple virtual databases are valid queries,
+although whether or not they can be answered depends on the availability of
+appropriate producers at the time.
+
+Table names in the FROM clause must be prefixed by a
+virtual database name, separated from the table name by a dot
+(as in \textit{DB.Table}), in order to indicate which virtual database contains
+the required table.  The database name must not be used anywhere else in the SELECT
+statement.  If columns in two tables need to be differentiated, an alias for the
+table should be used.
+
+\subsubsection{Simple Queries}\label{sec:SQLSimpleQueries}
+
+A simple query is one of the form:
+
+\begin{verbatim}
+SELECT <column-expression> FROM <table-name> WHERE <predicate>
+\end{verbatim}
+
+where:
+
+\begin{itemize}
+\item $<$column-expression$>$ contains only column names, constants and the
+mathematical operators for addition, subtraction, multiplication and division
+(+, -, * and /)
+\item $<$table-name$>$ contains only one VDB-prefixed table or view name,
+although the VDB prefix \textit{is} allowed to be a list (in curly brackets as
+above)
+\item $<$predicate$>$ contains only column names, constants, the comparison
+operators =, $>$, $<$, $>$=, $<$=, $<>$ and LIKE and the boolean operator AND.
+\end{itemize}
+
+\subsection{Data Integrity}\index{data integrity}
+
+Tuples enter R-GMA in Primary Producers' INSERT statements, and
+On-Demand Producers' query responses. They leave R-GMA in Consumers'
+result sets. In all three cases, data values are transported as strings,
+regardless of their declared SQL data type. Since R-GMA services
+must internally process and store these values, they may have to convert
+the data values into native types at various stages of processing, and this
+has the potential to degrade some types of data. R-GMA makes the following
+guarantees about data integrity:
+
+\begin{itemize}
+\item Data values with integer and string types (INTEGER, CHAR,
+VARCHAR) will pass through R-GMA unchanged.
+\item Data values with REAL and DOUBLE types will be stored and
+manipulated using types with at least as many bits as required by the
+table definition, but some degradation may occur in values that
+approach the limits of this precision. R-GMA will only throw an exception if
+precision is lost in the most significant digits (in line with SQL92).
+\item Data values with TIMESTAMP types will be preserved up to the
+precision specified for the corresponding table column.
+\end{itemize}

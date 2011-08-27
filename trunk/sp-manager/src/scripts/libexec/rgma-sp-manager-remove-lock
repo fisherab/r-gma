@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo $0 "must be invoked with two arguments"
+	exit 1
+fi
+
+LOCK_DIR=$1/var/rgma-sp-manager
+L=`find $LOCK_DIR -maxdepth 1 -name lock -mmin +$2`
+if [ -n "$L" ]; then
+	NOW="`date -u` -"
+	PID=`cat $L`
+    kill $PID 2> /dev/null && echo $NOW Process $PID killed
+    \rm $L && echo $NOW Lock file removed for process $PID
+fi

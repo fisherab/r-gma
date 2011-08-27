@@ -1,0 +1,64 @@
+Line 2 imports the library to allow R-GMA to be used.
+
+Line 3 is the start of the \emph{try} block for which all R-GMA exceptions will
+be caught.
+
+Lines 4--10 create a consumer with a 
+continuous query of \texttt{SELECT userId, aString, aReal,
+anInt MeasurementTime FROM default.userTable}. In this case we have a
+continuous query which will start with available published tuples from
+the last 10 minutes and receive any new tuples published. It is
+possible to leave out the historyPeriod in which case only newly
+published tuples will be received. A timeout of five minutes is specified
+otherwise, as a continuous query, it will run forever unless explicitly aborted.
+
+Lines 11--23 retrieve all of the results for the query. While there is
+data available it will loop without delay. If there is no data
+currently available it will sleep for 2 seconds before trying
+\texttt{pop} again. The 2000 is the maximum number of tuples to be
+returned at once. The data fields are accessed by the various getXXX
+operations. The argument is the offset  within the tuple where the fields are
+ordered as in the \texttt{SELECT} statement.
+
+Line 24 closes the consumer.
+
+Lines 25--27 report any exceptions that may occur.
+
+\subsubsection {One-off Queries}
+For one-off queries, either history or latest, it is preferable to
+check to see if the query aborted. This can be achieved by looking to
+see if \texttt{consumer.hasAborted()} is true after either kind of
+consumer loop.
+
+This can be the result of hitting the timeout (5 minutes in this
+case) or making an explicit \texttt{consumer.abort()} call. Note that
+continuous queries \emph{only} stop by one of these means so there is
+no point in checking in that case.
+
+\subsubsection{Resilient Consumer Example}
+This example illustrates how to write a resilient consumer according
+to the recommendations in section \ref{sec:advice}.
+The consumer retrieves information periodically.
+
+\input{ResilientConsumer-py}
+
+Lines 3--8 set up the consumer properties. This uses a continuous
+information query starting from 30 seconds in the past so that if the
+consumer is restarted data should not be lost. N.B. It is possible
+that this may cause some tuples to be retrieved a second time if the
+consumer restarts.
+
+Line 3 starts the main try block to trap permanent exceptions
+
+Line 4 defines the query
+
+Lines 5--14 create a new consumer. If there is a temporay exception the
+operation is retried after 60 seconds.
+
+Lines 15--32 loops for ever - each iteration will retrieve data and
+check for warnings. While there is data available it will loop without
+delay. If there is no data currently available it will sleep for 2
+seconds before trying again. See the Consumers section in
+\ref{sec:advice} for further explanation about the pop and sleep.
+
+Lines 33--35 deal with any permanent exceptions

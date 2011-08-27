@@ -1,0 +1,15 @@
+<module rename-to='browser'>
+
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.google.gwt.xml.XML" />
+
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+	<entry-point class='org.glite.rgma.browser.client.Browser' />
+
+	<stylesheet src='Browser.css' />
+	
+	<source path='client'/>
+
+</module>

@@ -1,0 +1,19 @@
+## Show names of all tables defined in the Schema
+show tables
+
+## Create a table
+rules add ::RW
+create table ATable(first integer primary key, second varchar(6))
+show tables
+# Note the need to set the rules first. All tables require a primary key.
+
+## Display information about the table
+describe ATable
+show columns from ATable
+
+# Note that the 'show columns' command shows just user defined columns in a compact manner
+# that may be useful for copying and pasting
+
+## Drop a table
+drop table ATable
+show tables

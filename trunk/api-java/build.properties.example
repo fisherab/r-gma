@@ -1,0 +1,8 @@
+repositoryDir=../../etics/repository
+
+bouncycastle.location=${repositoryDir}/externals/bouncycastle/1.42/noarch
+org.glite.security.util-java.location=${repositoryDir}/org.glite/org.glite.security.util-java/2.0.3/noarch
+org.glite.security.trustmanager.location=${repositoryDir}/org.glite/org.glite.security.trustmanager/2.0.6/noarch
+
+prefix=build/prefix
+version=1.2.3

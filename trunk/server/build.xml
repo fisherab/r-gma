@@ -1,0 +1,140 @@
+<project name="server" default="install">
+
+	<property file="build.properties" />
+
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
+
+	<target name="install" depends="installCommon, installUnix, installNotUnix" />
+
+	<path id="compile.classpath">
+		<fileset dir="${log4j.location}">
+			<include name="**/log4j*.jar" />
+		</fileset>
+		<fileset file="${commons-dbcp.location}/commons-dbcp-*.jar" />
+		<fileset file="${commons-pool.location}/commons-pool-*.jar" />
+		<fileset file="${tomcat.location}/common/lib/servlet-api.jar" />
+		<fileset file="${bouncycastle.location}/share/java/bcprov.jar" />
+		<fileset file="${org.glite.security.trustmanager.location}/share/java/glite-security-trustmanager.jar" />
+		<fileset file="${org.glite.security.util-java.location}/share/java/glite-security-util-java.jar" />
+		<fileset file="${org.glite.security.voms-api-java.location}/share/java/vomsjapi.jar" />
+	</path>
+
+	<uptodate property="javacc.notRequired" targetfile="cache/org/glite/rgma/server/services/sql/parser/Parser.java" srcfile="src/org/glite/rgma/server/services/sql/Parser.jj">
+	</uptodate>
+
+	<fixcrlf srcdir="src/scripts" />
+	<fixcrlf srcdir="config" />
+
+	<target name="cache" depends="javacc">
+		<mkdir dir="cache" />
+	</target>
+
+	<target name="javacc" unless="javacc.notRequired">
+		<mkdir dir="cache/org/glite/rgma/server/services/sql/parser" />
+		<javacc target="src/org/glite/rgma/server/services/sql/Parser.jj" outputdirectory="cache/org/glite/rgma/server/services/sql/parser" javacchome="${javacc.location}/bin/lib" static="false" />
+		<replace file="cache/org/glite/rgma/server/services/sql/parser/Parser.java" token="public class Parser" value="@SuppressWarnings(&quot;all&quot;) public class Parser" />
+		<replace file="cache/org/glite/rgma/server/services/sql/parser/ParserTokenManager.java" token="public class ParserTokenManager" value="@SuppressWarnings(&quot;all&quot;) public class ParserTokenManager" />
+		<replace file="cache/org/glite/rgma/server/services/sql/parser/ParseException.java" token="public class ParseException" value="@SuppressWarnings(&quot;all&quot;) public class ParseException" />
+		<replace file="cache/org/glite/rgma/server/services/sql/parser/TokenMgrError.java" token="public class TokenMgrError" value="@SuppressWarnings(&quot;all&quot;) public class TokenMgrError" />
+	</target>
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="${prefix}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<javac destdir="build/classes" debug="true" target="1.5">
+			<classpath>
+				<path refid="compile.classpath" />
+			</classpath>
+			<src path="src" />
+			<src path="cache" />
+		</javac>
+
+		<mkdir dir="build/share/java" />
+		<jar destfile="build/share/java/glite-rgma-server.jar">
+			<fileset dir="build/classes" />
+			<fileset dir="src" includes="**/*.xsd" />
+			<manifest>
+				<section name="glite-rgma-server">
+					<attribute name="Version" value="${version}" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="war" depends="compile">
+
+		<copy todir="build/webapp/R-GMA" file="src/webfiles/index.html" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib">
+			<fileset file="${commons-dbcp.location}/commons-dbcp-*.jar" />
+			<fileset file="${commons-pool.location}/commons-pool-*.jar" />
+		</copy>
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib">
+			<mapper type="merge" to="log4j.jar" />
+			<fileset dir="${log4j.location}">
+				<include name="**/log4j*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib">
+			<mapper type="flatten" />
+			<fileset dir="${mysql-jdbc.location}">
+				<include name="**/mysql-connector-java-*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="${hsqldb.location}/lib/hsqldb.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="build/share/java/glite-rgma-server.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="${org.glite.security.trustmanager.location}/share/java/glite-security-trustmanager.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="${org.glite.security.util-java.location}/share/java/glite-security-util-java.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="${org.glite.security.voms-api-java.location}/share/java/vomsjapi.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF/lib" file="${xerces2-j.location}/xercesImpl.jar" />
+		<copy todir="build/webapp/R-GMA/WEB-INF" file="config/web.xml" />
+		<copy todir="build/webapp/R-GMA/WEB-INF" file="LICENSE" />
+		<jar jarfile="build/webapp/R-GMA.war" basedir="build/webapp/R-GMA" />
+	</target>
+
+	<target name="installCommon" depends="war">
+		<copy todir="${prefix}/share/webapps" file="build/webapp/R-GMA.war" />
+		<copy todir="${prefix}/etc/rgma-server" file="config/log4j.properties" />
+		<echo file="${prefix}/etc/rgma-server/service-version.txt" message="${version}" />
+
+		<copy toDir="${prefix}/share/doc/rgma-server">
+			<fileset file="LICENSE" />
+			<fileset file="RELEASE-NOTES" />
+		</copy>
+
+	</target>
+
+	<target name="installUnix" if="isUnix">
+
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts">
+				<exclude name="bin/*" />
+			</fileset>
+		</copy>
+
+		<copy toDir="${prefix}">
+			<fileset dir="src/scripts">
+				<include name="bin/*" />
+			</fileset>
+			<mapper type="glob" from="*.py" to="*" />
+		</copy>
+
+		<chmod perm="755" dir="${prefix}/bin/" includes="*" verbose="Yes" />
+		<chmod perm="755" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+
+	</target>
+
+	<target name="installNotUnix" unless="isUnix">
+		<copy todir="${prefix}">
+			<fileset dir="src/scripts/" />
+		</copy>
+		<chmod perm="755" dir="${prefix}/bin/" includes="*" verbose="Yes" />
+		<chmod perm="755" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+	</target>
+
+</project>

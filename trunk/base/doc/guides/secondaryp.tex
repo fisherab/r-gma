@@ -1,0 +1,24 @@
+\section{Republishing via Secondary Producers}
+As explained in Section~\ref{sec:producers}, a secondary producer
+populates its internal storage by running a query and the user code
+only sets the process running. This is demonstrated by the code in the
+examples below.
+
+This code is only shown here for completeness as it is expected that most people
+will use the \texttt{rgma-sp} tool as explained in
+Section~\ref{sec:rgma-sp} which should do everything that is needed.
+
+If the secondary producer uses a name database storage then it is important
+that the producer is closed reliably otherwise there may be a delay before the
+secondary producer can be restarted with the same database storage name.
+
+A secondary producer must keep up with the data being published into
+various primary producers, and there is no client to report to that
+resources are running low {--} in particular there is no point in
+refusing to accept more tuples as they may then get discarded by the
+history retention period of the primary producer. To cope with this, a
+memory based secondary producer will destroy itself when it detects
+that it cannot function reliably.
+
+\subsection{Secondary Producer Examples}
+\subsubsection{Simple Secondary Producer Example}

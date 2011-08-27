@@ -1,0 +1,53 @@
+.TH RGMA 1 "January 2010"
+.SH NAME
+rgma \- R-GMA Command Line Tool
+.SH SYNOPSIS
+.B rgma
+.RB [ \-c 
+.IR command "]..."
+.RI [ vdbName ]
+.br
+.B rgma
+.RB [ \-f
+.IR file ]
+.RI [ vdbName ]
+.br
+.B rgma
+.RB [ \-h | \-\-help ]
+.br
+.B rgma
+.RB [ \-v | \-\-version ] 
+.SH DESCRIPTION
+.B rgma
+Provides command-line access to the R-GMA information and
+monitoring system. It contains its own help system so the commands are not described here. If you specify
+.I vdbname
+then this defines the initial VDB. Otherwise the initial VDB will be
+.B Default
+.SH OPTIONS
+
+.TP
+.B \-c " command"
+Execute 
+.B command
+then exit. If specified more than once, execute commands in the order they appear, then exit.
+
+.TP
+.B \-f " file"
+Execute commands in
+.B file
+then exit.
+
+.TP
+.BR \-h  " or " \-\-help
+Display usage information and exit.
+
+.TP
+.BR \-v  " or " \-\-version 
+Display version information and exit.
+.SH REPORTING BUGS
+Please report any bugs to <rgma-support@physics.gla.ac.uk>.
+.SH COPYRIGHT
+Copyright (c) Members of the EGEE Collaboration. 2004-2010.
+.br
+See http://www.eu-egee.org/partners/ for details on the copyright holders.

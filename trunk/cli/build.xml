@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	Copyright (c) 2004 on behalf of the EU EGEE Project: 
+-->
+
+<project name="command-line" default="install">
+
+	<property name="prefix" value="build/prefix" />
+	<property name="version" value="0.0.0" />
+	<fixcrlf srcdir="src/scripts"/>
+
+	<target name="clean">
+		<delete dir="build" />
+		<delete dir="${prefix}" />
+	</target>
+
+	<target name="install">
+		<copy todir="${prefix}">
+			<fileset dir="src/scripts/" />
+			<filterset>
+				<filter token="VERSION" value="${version}" />
+			</filterset>
+		</copy>
+
+		<chmod perm="755" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+		<chmod perm="755" dir="${prefix}/libexec/rgma-client-check/cli/" includes="*" verbose="Yes" />
+
+		<copy toDir="${prefix}/share/doc/rgma-command-line">
+			<fileset file="LICENSE" />
+			<fileset file="RELEASE-NOTES" />
+		</copy>
+
+	</target>
+
+</project>

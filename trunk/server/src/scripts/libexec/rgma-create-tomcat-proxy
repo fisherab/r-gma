@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# $1 - name of proxy
+# $2 - owner:group
+
+cert=/etc/grid-security/hostcert.pem
+key=/etc/grid-security/hostkey.pem
+
+if [ "x$GLOBUS_LOCATION" = "x" ]; then
+    file=/etc/sysconfig/globus
+    if [ -f $file ]; then
+	. $file
+	if [ "x$GLOBUS_LOCATION" = "x" ]; then
+	    echo "Error: GLOBUS_LOCATION is not found in $file"
+	fi
+    fi
+
+    export GLOBUS_LOCATION=${GLOBUS_LOCATION:-/opt/globus}
+fi
+
+. $GLOBUS_LOCATION/etc/globus-user-env.sh
+
+file=$PROXY.$$
+
+$GLOBUS_LOCATION/bin/grid-proxy-init -cert $cert -key $key -out $file &&
+    chown $2 $file &&
+    mv -f $file $1

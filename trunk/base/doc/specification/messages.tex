@@ -1,0 +1,100 @@
+\section{Message Formats}\label{sec:MessageFormat}
+
+\subsection{Data types}
+
+An important part of these chapters is the list of operations and their input 
+and output parameters. Input parameters are prefixed by $\Rightarrow$ and 
+output parameters by $\Leftarrow$. Parameters may be omitted or repeated as
+indicated by the notation:
+
+\begin{description}
+\item[(1..1)] Exactly once - the default
+\item[(0..1)] May be omitted
+\item[(1..*)] At least one
+\item[(0..*)] Any number
+\end{description}
+
+after the basic type name. Types take the following values:
+
+\begin{description}
+\item[xsd:string] a sequence of Unicode characters
+\item[xsd:boolean] the literals \textit{true} or \textit{false} encoded as strings
+\item[xsd:int] an integer in the range $[-2^{31},2^{31} -1]$
+\item[xsd:long] an integer in the range $[-2^{63},2^{63} -1]$
+\item[Tuple] a tuple. This is followed by a list of the fields within the tuple.
+These can be of any of the types mentioned - except for another tuple.
+\end{description}
+
+\subsection{Request}
+
+Simple requests (such as xsd:string) values are sent as http request parameters 
+(either POST or GET) and Tuples are encoded as one or more result sets within 
+an XML string sent as a single http parameter. 
+
+\subsection{Response}
+
+The output is sent as an XML encoding of one or more R-GMA tuple sets. 
+
+Errors are also encoded as XML.
+
+\subsection{XML formats}
+
+\subsubsection{Tuple set}\label{sec:TupleXML}
+
+A single result set looks like:
+
+\begin{verbatim}
+<r m="Be warned" r="2" c="2">
+  <v>Row 1 Col 1</v>
+  <v>Row 1 Col 2</v>
+  <n/>
+  <v></v>
+  <e/>
+</r>
+\end{verbatim}
+
+The result set has an (optional) and has 2 rows and 2 columns as indicate by the
+r and c attributes which default to 1. The data values then follow inside
+\verb!<v></v>! or \verb!<n/>! to indicate the null value. The \verb!<e/>!
+indicates that there is no more data.
+
+With these rules a simple ``OK'' message is just
+
+\begin{verbatim}
+<r><v>OK</v><e/></r> 
+\end{verbatim}
+
+Multiple tuple sets must be wrapped in \verb!<s></s>! as shown below:
+
+\begin{verbatim}
+<s>
+  <r><v>OK</v><e/></r> 
+  <r><v>OK</v><e/></r>
+</s> 
+\end{verbatim}
+
+\subsubsection{Errors}
+
+A temporary exception is represented as:
+
+\begin{verbatim}
+<t m="This may recover" o="1"/>
+\end{verbatim}
+
+where the o attribute shows the number of succesfgul operations and defaults to
+0.
+
+A permanent exception uses p instead of t. For example:
+
+\begin{verbatim}
+<p m="This will not recover"/>
+\end{verbatim}
+
+The unknown resource message is very simple - it is just:
+
+\begin{verbatim}
+<u/>
+\end{verbatim}
+
+
+
