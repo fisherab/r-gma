@@ -1,0 +1,28 @@
+Lines 0--1 are the various necessary import statements for the R-GMA
+java classes.
+
+Line 4 is the name of the virtual database.
+
+Lines 5--7 is the create table statement defining the column names and
+types.
+
+Lines 8--10 is the authorization rule in the form
+predicate:credentials:action. This can be a list of rules.
+
+Lines 12--13 contacts the schema and adds the table definition.
+
+Lines 14--17 report any R-GMA exceptions that may occur.
+
+\input{alterTable.tex}
+
+\subsection {Drop Table}
+\label{sec:dropTable}
+
+In order to drop a table replace line 13 from the create table example
+with:
+\begin{verbatim}
+schema.dropTable("userTable");
+\end{verbatim}
+This will remove the table definition from the schema. Within a few
+minutes any producer and consumer resources still using the table will
+be destroyed.

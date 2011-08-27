@@ -1,0 +1,59 @@
+\documentclass{egee-windows}
+\usepackage{comment}
+\usepackage{longtable}
+\usepackage[draft]{fixme}
+
+\title{R-GMA User Guide for @language-name@ Programmers}
+\author{JRA1-UK}
+\DocIdentifier{EGEE-JRA1-TEC-@EDMS@}
+\Date{\today}
+\Activity{JRA1: Middleware Engineering and Integration (UK Cluster)}
+\DocStatus{FINAL}
+\Subtitle{} %No SubTitle
+\Dissemination{PUBLIC}
+\DocumentLink{https://edms.cern.ch/document/@EDMS@/}
+
+\Abstract{This document provides the @language-name@ programmer with the
+information necessary to get started with R-GMA.}
+
+\begin{document}
+\def\toppage{\url{http://hepunx.rl.ac.uk/egee/jra1-uk/r-gma/} }
+
+\input{frontmatter}
+
+\newpage
+\tableofcontents
+
+\newpage
+\input{intro}
+\input{authorization}
+\input{exception}
+\input{runningexamples}
+\input{runningexamples-@language@-post}
+\input{managingTableDefinitions}
+\input{CreateTableExample-@language@}
+\input{CreateTableExample-@language@-post}
+\input{primaryp}
+\input{PrimaryProducerExample-@language@}
+\input{PrimaryProducerExample-@language@-post}
+\input{consumer}
+\input{ConsumerExample-@language@}
+\input{ConsumerExample-@language@-post}
+\input{secondaryp}
+\input{SecondaryProducerExample-@language@}
+\input{SecondaryProducerExample-@language@-post}
+\input{rgma}
+\input{browser}
+\input{rgmasp}
+\input{sql}
+\input{rgmaadvice}
+\input{notesVDBAdmin}
+\input{notesSysadmin}
+\input{release}
+\input{problems}
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{jra1-uk}
+
+\end{document}

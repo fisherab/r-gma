@@ -1,0 +1,28 @@
+Line 2 imports the library to allow R-GMA to be used.
+
+Line 3 is the name of the virtual database.
+
+Line 4--5 is the create table statement defining the column names and types.
+
+Line 6 is the authorization rule in the form
+predicate:credentials:action. This can be a list of rules.
+
+Line 7 is the start of the \emph{try} block.
+
+Line 8 contacts the schema and adds the table definition.
+
+Lines 9--11 report any exceptions that may occur.
+
+\input{alterTable.tex}
+
+\subsection {Drop Table}
+\label{sec:dropTable}
+
+In order to drop a table replace line 8 from the create table example
+with:
+\begin{verbatim}
+rgma.Schema(vdb).dropTable("userTable")
+\end{verbatim}
+This will remove the table definition from the schema. Within a few
+minutes any producer and consumer resources still using the table will
+be destroyed.

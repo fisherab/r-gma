@@ -1,0 +1,127 @@
+v6.2.0 29/4/10
+==============
+Bug none   Provide command to alter the schema
+
+v6.0.0 28/01/10
+===============
+Bug #7543  Comments may be used starting with #
+Bug none   Many non-backward compatible changes to make it more pleasant to use
+Bug none   Added man page
+
+v5.1.1 24/11/09
+================
+Bug none   New facility to build from source on "any" platform
+Bug none   Tidy up and make easier to build
+
+v5.1.0 23/10/2008
+=================
+Make client check use history query
+Add set storage
+Fix case dependence of producer predicate handling
+Fix the tsv and csv output with non string data types
+Add support for authz rules and tuple stores
+Bug #21754 Added a cleanup call to close Producers when exiting
+Bug #6479 Fixed csv and tsv output, added 'show output'
+Bug #4284 Check for invalid table in showProducers
+Bug #14970 Declare predicate in client check producer script
+Allow multiple producers in directed queries
+
+v5.0.2 21/10/05
+===============
+Bug #12539 Removed isEndOfResults()
+
+v5.0.1 14/10/05
+===============
+Added rgma-client-check scripts
+Added 'write results' command
+Added commands to clear and display command history
+Added 'can be null' to describe
+Added secondary producer info to 'show producers'
+Added create/drop table
+Use new registry/schema APIs and include primary key info in 'describe'
+Added 'close producers' 
+Fixed display of result set footer and number of rows
+Support result set warning
+Remove use of consumer.isExecuting()
+Bug #9405 Set rgma pythonpath entries before existing entries
+Bug #6479 Added csv/tsv output support
+Bug #6568 Added command to write command history to file
+Bug #7543 Added comment character
+Bug # 4284 better error message for non existent table
+
+v4.1.12 14/06/05
+================
+rpm now obsoletes edg prefixed rpms
+
+v4.1.11 25/5/05
+===============
+Changed consumer loop to support chunking of results
+
+v4.1.10 18/5/05
+=======
+Reverted UserTable->userTable
+
+v4.1.9
+======
+Documentation updated
+Bug #7626 Improved tab completion and error message for 'show producer predicate'
+Bug #7624 Improved handling of producer predicates
+Bug #7623 Added help for all producer properties
+Bug #7627 Added help and documentation for 'show properties'
+Bug #7640 Fixed crash with drop/create table
+Bug #7397 Added 'reverse-i-search' to manual
+Bug #6481 Improve error messages for 'show'
+Bug #6506 Improve tab completion for 'select'
+Bug #7537 Handle EOF in batch file better
+Bug #7541 Improve man page
+
+v4.1.7
+======
+
+Bug #7310 Display all registry locations 
+Bug #7245 Write error messages to stderr
+
+v4.1.6
+======
+Bug #6480 Improved error messages for 'set' commands
+Bug #6509 Improve case insensitivity of commands
+Bug #6516 Improved error when batch file not found
+Bug #6477 Improved error messages
+Fixed lowercasing of EOF command
+Bug #7147 Improved response to ctrl-c
+Bug #6507 Improved help for 'select'
+Removed dependency on templates-latex-style
+
+v4.1.5
+======
+Changed documentation directory name for consistency
+Improved case-insensitivity
+Moved test script location
+
+v4.0.4
+======
+Bug #6484 Added 'help examples' command
+Bug #6506 Make tab completion recognize 'select * from'
+Bug #6494 Improved help for 'insert'
+Bug #6481 Improved error message for 'show tables'
+Bug #6515 Added 'read' command to read commands from external file
+Bug #6513 Set exit code when commands fail
+Bug #6483 Prevent hitting return from repeating previous command 
+Bug #6476 Add 'show' commands for all 'set' commands
+
+v4.0.3
+======
+Added man page
+
+v 4.0.2
+=======
+Bug #None Added latex documentation
+Bug #None Fix error when failed insert is followed by correct one
+Bug #None Make producer predicates work correctly
+Bug #None Switched to the new command line tool using glite api
+Bug #5306 Use GLITE_LOCATION if RGMA_HOME is not set
+
+V 4.0.1
+=======
+
+Bug #None Fixed -c option

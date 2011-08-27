@@ -1,0 +1,60 @@
+Line 2 is the C header file for R-GMA. It must be included
+to make any use of the provided R-GMA C library.
+
+Line 5 declares a pointer to an \texttt{RGMAPrimaryProducer}.
+
+Lines 12--17 create the producer. The storage is of type memory. Memory
+storage has no name so this is followed by NULL. The producer is configured to 
+only answer continuous queries. Note the error handling which always follows
+the same pattern. In this example as the program quits on all errors no
+attention is paid to freeing resources.
+
+Lines 19--24 declare the intention of publishing to the specified
+table. The first argument identifies the primary producer --- this is true for
+all calls except the \texttt{RGMAPrimaryProducer\_create}. The next
+pair of arguments specifies the table name and the predicate. The
+table must already be known in the schema and the predicate may be used
+to specify that you are publishing a specific subset of the complete
+table. The next two arguments are the retention periods (see
+\ref{sec:rp}: the history one stating how long tuples will be kept for
+\emph{continuous} and
+\emph{history} queries and the latest one for \emph{latest} queries.
+The error checking looks just the same as for the
+createPrimaryProducer. 
+
+Lines 25--31 construct and insert a tuple. The error handling is again
+the same as before. The latest retention period is specified as 0. This means
+that the value specified when the table was declared will be used.
+
+Lines 32--36 close the producer and free the memory associated with the
+producer. Each call to an RGMAXXXX\_create should be paired with an
+RGMAXXXX\_close or RGMAXXXXdestroy to avoid memory leaks.
+
+
+\subsubsection{Resilient Primary Producer Example}
+
+This example illustrates how to write a resilient producer according to the
+recommendations in section \ref{sec:advice}. The Primary Producer publishes
+information periodically every 30 seconds. If there is any temporary exception
+the operation is repeated 60 seconds later. Permanent expceptions are fatal. In
+this example  when dealing with the temporary exceptions care is taken to free
+the exception to avoid a memory leak.
+
+\input{ResilientPrimaryProducer-c}
+
+Line 17 loop until the operation (creation of a primary producer) is succesfull
+or there is a permanent exception. 
+
+Lines 18--19 create the primary producer.
+
+Lines 20--22 break out of the loop if succesful.
+
+Lines 23--25 give up on a permanent exception.
+
+Lines 27--30 for a temporary exception, free the exception and sleep for 60
+seconds
+
+Lines 32-46 are just like lines 17-31 but this time a table is declared.
+
+Lines 47-64 are similar to lines 17-31 however instead of breaking out of the
+loop for a succesful operation the code continues to loop publishing more data.

@@ -1,0 +1,149 @@
+\section{Mediator Subsystem}
+\label{sec:mediator}
+
+The mediator acts as an intermediary between the Consumer/Secondary Producer and the Registry,
+as illustrated in the picture below.
+
+
+The Mediator is not  exposed as a service.
+
+\subsection{Concepts}
+\subsubsection*{Plan}
+
+A Plan describes the producers a consumer needs to contact to answer its query. It
+consists of a list of PlanEntry structures, together with an optional warning string.
+An empty string is assumed to mean ``no warning''.
+
+\subsubsection*{PlanEntry}
+
+A plan entry is a query to send to a Producer. It consists of the \texttt{ProducerDetails} object,
+the SQL SELECT statement, a start time and an end time for the query.
+
+\subsubsection*{PlanInstruction}
+
+A plan instruction describes a modification to a plan. There are two types:
+
+\begin{itemize}
+\item An \texttt{ADD} instruction adds a PlanEntry to a Plan.
+\item A \texttt{REMOVE} instruction removes a PlanEntry from a Plan.
+\end{itemize}
+
+Both types of instruction may have a warning which will be attached to the
+modified query plan if it does not already have one.
+
+\subsection{Operations}
+\subsubsection{getPlansForQuery}
+
+This is the main mediation operation. It is called by a consumer when its query is started
+and is responsible for registering the consumer (for a \texttt{CONTINUOUS} query) and 
+returning the query plan (the producers that must be contacted to answer the query).
+
+\textbf{Continuous queries}
+
+A single plan consisting of all relevant primary producers that can answer continuous
+queries. If the query has an associated time interval 
+and not all the relevant producers have a sufficient HRP to respect it, a 
+warning will be attached to the plan. Continuous queries must be \textit{simple}, as
+a result only one table need be considered (although VDB union is possible, these have
+been removed at an earlier stage).
+
+\texttt{getMatchingProducersForTables} is called on the registry instance for
+the VDB in the query. This has the side-effect of registering the consumer in the
+specified VDB. The matching producers are looped through and if the producer
+supports continuous queries and is a primary producer, added to the list. If the
+producer does not have a sufficiently long HRP, a flag is set to generate a
+warning. Each producer is sent the query. 
+
+\textbf{Latest/History queries}
+
+Loop through all VDBs referenced in the query and get all matching producers for
+the query from the registry instance for this VDB then update the list of producers, adding producers which are not in the list and
+          adding vdb-table details to those that are already in the list.
+  
+  From the list of producers, extract a list of complete producers, i.e. those
+        secondary producers which publish all the tables in the query, which support the
+        query type and have no predicate (or a predicate which is complete with respect to the
+        query).
+  If at least one complete producer was found, form a separate plan for each one. Attach a
+        warning to any plan if the query is a history query and the secondary producer has an
+        insufficient HRP. Return this list of plans.
+        
+  If no complete producers were found, but primary producers do exist, create a fallback 
+        plan consisting of all primary producers which publish all the tables and support the 
+	query type. Attach a warning if there are other primary producers which are not included
+        in this list, or if there is more than one primary producer and the query is complex
+        (since complex queries cannot be answered completely by merging results from separate
+        producers).
+         
+  If no primary producers exist, return an empty plan with no warning - there is no
+        information in the system to answer the query so an empty plan is correct.
+
+\textbf{Static queries}
+
+Loop through all VDBs referenced in the query and get all matching producers for
+the query from the registry instance for this VDB then update the list of producers, adding producers which are not in the list and
+adding vdb-table details to those that are already in the list.
+  
+Create a plan consisting of all on-demand producers which publish all the tables. 
+Attach a warning if there are primary producers which are not included
+in this list, or if there is more than one on-demand producer and the query is complex
+
+
+\subsubsection{refreshPlan}
+
+This operation is called by continuous consumers to update their plan and
+reaffirm their registration. It checks for any new relevant producers at the same
+time. In principle the consumer should get notification directly from new
+producers, but this method provides a fallback solution if this message is lost.
+
+Get all matching producers for the query from the registry instance for the VDB.
+This has the side-effect of re-registering the consumer.
+
+If the plan consists only of secondary producers, continue to the next VDB,
+ignoring the list of returned producers.
+
+If the plan contains primary producers, check that each returned continuous
+primary producer is included in the plan (either directly or via a secondary
+producer). For any that are not included, create an 'add' instruction for the
+producer. Attach a warning to the instruction if the producer's HRP is
+insufficient to answer the query.
+
+\subsubsection{addProducerToPlan}
+
+This is called when a continuous consumer receives notification from a new,
+potentially relevant producer.
+
+If the producer is relevant and a  primary producer and if the producer is not
+already covered by the plan (by a secondary producer) then  return an 'add'
+instruction for the producer. Attach a warning to the instruction if the
+producer's HRP is insufficient to answer the query.
+ 
+\subsubsection{removeProducerFromPlan}
+
+This is called when a consumer receives notification that a potentially relevant
+producer no longer exists, or when any kind of consumer determines that a
+producer in its current plan is not functioning. Both these forms of notification
+are assumed to be more reliable than whether or not the producer exists in the
+registry.
+
+If the producer is currently part of the plan and is a primary producer return a
+'remove' instruction for the producer.
+
+If the producer is currently part of the plan and is a secondary producer we are
+likely to need a new plan so:
+
+Call \texttt{getPlansForQuery} to obtain a list of new plans. Remove any plans
+that include the removed producer (it may still be in the registry but we trust
+an explicit removal more).
+
+For each plan, form a set of add/remove instructions that will change the current
+plan into the new one. Choose the smallest set of instructions that results in a
+new plan with no warning. If all the new plans have warnings, choose the smallest
+set of instructions.
+ 
+\subsubsection{closePlan}
+
+ If the query is continuous call \texttt{unregisterContinuousConsumer} on
+  the registry for the VDB referenced in the query.
+
+

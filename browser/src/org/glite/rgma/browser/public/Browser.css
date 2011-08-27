@@ -1,0 +1,54 @@
+.Error {
+color:red;
+}
+
+.ColumnHeader {
+color:green;
+font-weight:bold;
+}
+
+.RowHeader {
+color:#007FBA;
+font-weight:bold;
+}
+
+.BigLeft {
+margin:2px 2px 2px 10px;
+}
+
+.VeryBigLeft {
+margin:2px 2px 2px 100px;
+}
+
+.SmallLeft {
+margin:2px 10px 2px 2px;
+}
+
+.MainTitle {
+margin:8px 2px;
+color:purple;
+font-weight:bold;
+font-size: 120%;
+}
+
+.gwt-TextBox {
+padding: 0px;
+font-size: 100%;
+}
+
+.DataTable {
+border-collapse: collapse;
+margin:5px 2px;
+}
+
+.VSpace {
+margin:5px 2px;
+}
+
+
+.Data {
+border-width: 1px 1px;
+border-style:solid;
+padding: 2px 4px;
+}
+

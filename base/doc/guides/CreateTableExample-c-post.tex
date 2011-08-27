@@ -1,0 +1,36 @@
+Line 2 is the C include file for R-GMA. It must be included
+to make any use of the provided R-GMA C library.
+
+Line 4 is the name of the virtual database.
+
+Lines 5--6 is the create table statement defining the column names and
+types.
+
+Line 7 is the authorization rule in the form
+predicate:credentials:action. This can be a list of rules.
+
+Line 9 defines a pointer to an RGMAException. Exceptions are handled uniformly
+by the API. The last arument for all calls capable of failing is a pointer to a
+pointer to an RGMAException.  It is essential that after each call a check is made. 
+
+Line 10 contacts the schema and adds the table definition.
+
+Line 11 checks to see if an RGMAException object has been created.
+
+Line 12 report the error
+
+Line 13 frees the exception object. This must be done each time an
+RGMAException object is created by a failed call.
+
+\input{alterTable.tex}
+
+\subsection {Drop Table}
+\label{sec:dropTable}
+In order to drop a table replace line 10 from the create table example
+with:
+\begin{verbatim}
+RGMASchema_dropTable(vdb, "userTable", &exception);
+\end{verbatim}
+This will remove the table definition from the schema. Within a few
+minutes any producer and consumer resources still using the table will
+be destroyed.

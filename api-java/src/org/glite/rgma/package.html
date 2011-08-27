@@ -1,0 +1,24 @@
+<html>
+    <body>
+        This is the user API for R-GMA, a relational implementation of the Grid Monitoring Architecture from the OGF.
+        It creates the impression of inserting data into and fetching it from a distributed RDBMS.
+       <p>
+        
+        Assuming you already have access to a VDB then to create a table definition or modify it then create a {@link org.glite.rgma.Schema} object for that VDB.
+        
+        <p> 
+        To publish data create a {@link org.glite.rgma.PrimaryProducer}  and insert data into it.
+        
+        <p>
+        To consume data create a {@link org.glite.rgma.Consumer}  with your query and pop ResultSets from it.
+        
+        Many calls are able to throw exceptions. These are subclasses of the RGMAException and should be handled as explained below:
+        <dl>
+        <dt>{@link org.glite.rgma.RGMATemporaryException}</dt><dd>This can be thrown for a number of reasons including network problems. 
+        A sensible action is to to try the call again after a short interval.</dd>
+        <dt>{@link org.glite.rgma.RGMAPermanentException}</dt><dd>This is for errors such as security, configuration or user errors. 
+        The source of the problem should be investigated.</dd> 
+        </dl>
+        
+    </body>
+</html>

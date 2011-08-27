@@ -1,0 +1,38 @@
+\section{RGMAService Operations}\label{sec:Producer}\index{producer}
+
+The RGMAService is for functions not directly related to producers, consumers,
+registry or schema.
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+
+\begin{method}{listTupleStores}
+\outhead{Tuple(0..*)}{}
+\outpar{xsd:string logicalName}{Logical name of tuple store.}
+\outpar{xsd:boolean isHistory}{If logical name is associated with a history store.} 
+\outpar{xsd:boolean isLatest}{If logical name is associated with a latest store.}
+\desc Returns a list of all of the permanent tuple stores. A logical name may be associated with both history and latest 
+stores. Only the user's own tuple 
+stores are listed.
+\end{method}
+
+\begin{method}{dropTupleStore}
+\inpar{xsd:string logicalName}{Logical name of tuple store.}
+\OK
+\desc Permanently deletes a permanent tuple store, provided it is not currently being
+used by a producer. Only the user's
+own tuple stores can be dropped.
+\end{method}
+
+\begin{method}{getVersion}
+\outhead{Tuple}{}
+\outpar{xsd:string version}{Service version.}
+\desc Returns the version number of the services.
+\end{method}
+
+\begin{method}{getTerminationInterval}
+\outhead{Tuple)}{}
+\outpar{xsd:int terminationIntervalSec}{Termination interval in seconds.}
+\desc Returns the current termination interval defined by the services.
+\end{method}

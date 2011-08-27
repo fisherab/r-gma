@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Consumers &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Registry operations" href="registry.html" />
+    <link rel="prev" title="Producers" href="producers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="registry.html" title="Registry operations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="producers.html" title="Producers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="consumers">
+<h1>Consumers<a class="headerlink" href="#consumers" title="Permalink to this headline">¶</a></h1>
+<p>Consumers obtain data from producers.</p>
+<div class="section" id="consumer">
+<h2>Consumer<a class="headerlink" href="#consumer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Consumer">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Consumer</tt><big>(</big><em>query</em>, <em>queryType</em>, <em>queryInterval=None</em>, <em>timeout=None</em>, <em>producers=None</em><big>)</big><a class="headerlink" href="#rgma.Consumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.Resource" class="reference external" href="resources.html#rgma.Resource"><tt class="xref docutils literal"><span class="pre">rgma.Resource</span></tt></a></p>
+<p>Retrieve data from one or more producers by executing a specified SQL query.</p>
+<p>Creates a consumer with the specified query and query type. If a query interval is specified 
+the query will return queries up to some time in the past. 
+If a timeout is specified the query will terminate after that time interval. If the query was still running it will
+have <tt class="docutils literal"><span class="pre">aborted</span></tt> status. Nomrmally the mediator is used to select producers however a list of producers may 
+also be specified explicitly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>query</em> (<cite>string</cite>) &#8211; a SQL select statement</li>
+<li><em>queryType</em> (<a title="rgma.QueryType" class="reference internal" href="#rgma.QueryType"><tt class="xref docutils literal"><span class="pre">rgma.QueryType</span></tt></a> or <a title="rgma.QueryTypeWithInterval" class="reference internal" href="#rgma.QueryTypeWithInterval"><tt class="xref docutils literal"><span class="pre">rgma.QueryTypeWithInterval</span></tt></a>) &#8211; the type of the query</li>
+<li><em>queryInterval</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; the time interval is subtracted from the current time to give a time in the past. The query result will then use data from tuples published after this time.</li>
+<li><em>timeout</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; time interval after which the query will be aborted - if <tt class="xref docutils literal"><span class="pre">None</span></tt> the query will never be aborted.</li>
+<li><em>producers</em> ([ <a title="rgma.ResourceEndpoint" class="reference external" href="resources.html#rgma.ResourceEndpoint"><tt class="xref docutils literal"><span class="pre">rgma.ResourceEndpoint</span></tt></a> ]) &#8211; list of producers to contact.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.Consumer.abort">
+<tt class="descname">abort</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Consumer.abort" title="Permalink to this definition">¶</a></dt>
+<dd>Aborts the query. Pop can still be called to retrieve existing data.</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Consumer.hasAborted">
+<tt class="descname">hasAborted</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Consumer.hasAborted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if the query has aborted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if the query was aborted either by a user call or a timeout event</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Consumer.pop">
+<tt class="descname">pop</tt><big>(</big><em>maxCount</em><big>)</big><a class="headerlink" href="#rgma.Consumer.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves tuples from the result of the query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>maxCount</em> (<cite>integer</cite>) &#8211; the maximum number of tuples to retrieve</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.TupleSet" class="reference internal" href="#rgma.TupleSet"><tt class="xref docutils literal"><span class="pre">TupleSet</span></tt></a> containing the received tuples. A set with an empty list of tuples is returned if none were found.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="querytype">
+<h2>QueryType<a class="headerlink" href="#querytype" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.QueryType">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">QueryType</tt><a class="headerlink" href="#rgma.QueryType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permitted query type for a consumer - each represented by a class variable.</p>
+<dl class="attribute">
+<dt id="rgma.QueryType.C">
+<tt class="descname">C</tt><a class="headerlink" href="#rgma.QueryType.C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous Query.</p>
+<dl class="attribute">
+<dt id="rgma.QueryType.H">
+<tt class="descname">H</tt><a class="headerlink" href="#rgma.QueryType.H" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>History Query.</p>
+<dl class="attribute">
+<dt id="rgma.QueryType.L">
+<tt class="descname">L</tt><a class="headerlink" href="#rgma.QueryType.L" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Latest Query.</p>
+<dl class="attribute">
+<dt id="rgma.QueryType.S">
+<tt class="descname">S</tt><a class="headerlink" href="#rgma.QueryType.S" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Static Query.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="querytypewithinterval">
+<h2>QueryTypeWithInterval<a class="headerlink" href="#querytypewithinterval" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.QueryTypeWithInterval">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">QueryTypeWithInterval</tt><a class="headerlink" href="#rgma.QueryTypeWithInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permitted query type for a consumer where an interval for the query should be specified - each represented by a class variable.</p>
+<dl class="attribute">
+<dt id="rgma.QueryTypeWithInterval.C">
+<tt class="descname">C</tt><a class="headerlink" href="#rgma.QueryTypeWithInterval.C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous Query.</p>
+<dl class="attribute">
+<dt id="rgma.QueryTypeWithInterval.H">
+<tt class="descname">H</tt><a class="headerlink" href="#rgma.QueryTypeWithInterval.H" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>History Query.</p>
+<dl class="attribute">
+<dt id="rgma.QueryTypeWithInterval.L">
+<tt class="descname">L</tt><a class="headerlink" href="#rgma.QueryTypeWithInterval.L" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Latest Query.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="tupleset">
+<h2>TupleSet<a class="headerlink" href="#tupleset" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.TupleSet">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">TupleSet</tt><a class="headerlink" href="#rgma.TupleSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Results returned by a pop call on a consumer.</p>
+<dl class="method">
+<dt id="rgma.TupleSet.getData">
+<tt class="descname">getData</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleSet.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of tuples. It is possible to modify the list and even include tuples from different tables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[ <a title="rgma.Tuple" class="reference internal" href="#rgma.Tuple"><tt class="xref docutils literal"><span class="pre">rgma.Tuple</span></tt></a> ] The list may be empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TupleSet.getWarning">
+<tt class="descname">getWarning</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleSet.getWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the warning string associated with this tuple set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the warning string associated with this tuple set. It will be an empty string if no warning has been set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TupleSet.isEndOfResults">
+<tt class="descname">isEndOfResults</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleSet.isEndOfResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports whether this tuple set is the last one to be returned by a consumer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if there are no more tuple sets that need to be popped for this query</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tuple">
+<h2>Tuple<a class="headerlink" href="#tuple" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Tuple">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Tuple</tt><a class="headerlink" href="#rgma.Tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a tuple (or row of a table).</p>
+<dl class="method">
+<dt id="rgma.Tuple.getBool">
+<tt class="descname">getBool</tt><big>(</big><em>columnOffset</em><big>)</big><a class="headerlink" href="#rgma.Tuple.getBool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the boolean representation of the specified column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnOffset</em> (<cite>integer</cite>) &#8211; offset of the column within the tuple</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if the internal representation is equal, ignoring case, to the string &#8220;true&#8221;. Nulls will be returned as <tt class="xref docutils literal"><span class="pre">False</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Tuple.getFloat">
+<tt class="descname">getFloat</tt><big>(</big><em>columnOffset</em><big>)</big><a class="headerlink" href="#rgma.Tuple.getFloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the float representation of the specified column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnOffset</em> (<cite>integer</cite>) &#8211; offset of the column within the tuple</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">Float representation of the column. Nulls will be returned as 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Tuple.getInt">
+<tt class="descname">getInt</tt><big>(</big><em>columnOffset</em><big>)</big><a class="headerlink" href="#rgma.Tuple.getInt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the integer representation of the specified column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnOffset</em> (<cite>integer</cite>) &#8211; offset of the column within the tuple</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">integer representation of the column. Nulls will be returned as 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Tuple.getString">
+<tt class="descname">getString</tt><big>(</big><em>columnOffset</em><big>)</big><a class="headerlink" href="#rgma.Tuple.getString" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+Returns the string representation of the specified column.</blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnOffset</em> (<cite>integer</cite>) &#8211; offset of the column within the tuple</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">string representation of the column. An empty string will be returned for nulls.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Tuple.isNull">
+<tt class="descname">isNull</tt><big>(</big><em>columnOffset</em><big>)</big><a class="headerlink" href="#rgma.Tuple.isNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the null status of the specified column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>columnOffset</em> (<cite>integer</cite>) &#8211; offset of the column within the tuple</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if the column holds a null value otherwise <tt class="xref docutils literal"><span class="pre">False</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Tuple.getPyTuple">
+<tt class="descname">getPyTuple</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Tuple.getPyTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the contents of the tuple as a Python tuple. Values are represented as 
+strings - except for NULLs which are returned as <tt class="xref docutils literal"><span class="pre">None</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A python tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Consumers</a><ul>
+<li><a class="reference external" href="#consumer">Consumer</a></li>
+<li><a class="reference external" href="#querytype">QueryType</a></li>
+<li><a class="reference external" href="#querytypewithinterval">QueryTypeWithInterval</a></li>
+<li><a class="reference external" href="#tupleset">TupleSet</a></li>
+<li><a class="reference external" href="#tuple">Tuple</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="producers.html"
+                                  title="previous chapter">Producers</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="registry.html"
+                                  title="next chapter">Registry operations</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="registry.html" title="Registry operations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="producers.html" title="Producers"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

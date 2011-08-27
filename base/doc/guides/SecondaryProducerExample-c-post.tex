@@ -1,0 +1,26 @@
+Line 3 includes the usual R-GMA header file for C.
+
+Lines 8--13 obtain the server defined termination interval and divide this by 3
+to compute a suitable interval between making showSignOfLife calls. In the code
+below any exception will cause the program to terminate. If the code chose to
+try again after a temporary execption then this computation would allow one
+message to fail to be sent without losing the secondary producer.
+
+Lines 14-19 create the secondary producer with named database storage and
+support for continuous and latest queries.
+
+Lines 20--25 declare a table that the secondary producer will deal with. The
+predicate is an empty string meaning that this secondary producer will collect
+and republish the whole table. The history retention period is set to 2 hours.
+This means that tuples will be available to continuous queries until they are 2
+hours old (the secondary producer has been created without support for history
+queries). In addition tuples will be available for latest queries. In this case
+however the latest retention period is a property of the individual tuple as
+defined at the primary producer. Note the call to SecondaryProducer\_closebefore exiting following an exception. This ensures that a newsecondary producer can be started immediately with the same named databasestorage.
+Lines 26--35 keep the secondary producer alive.
+This program will continue to run for ever unless there is a problem.
+Notice that if the secondary producer does fail it will not be noted until
+showSignOfLife is called again, so you need to set the retention period 
+and sleep parameter according to your needs.
+
+\input{disconnectedSP}

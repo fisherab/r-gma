@@ -1,0 +1,63 @@
+% $Id: sql.tex,v 1.9 2009/11/12 16:53:35 awilson Exp $
+\section{SQL}
+
+\subsection{Examples of SQL Queries}
+To list selected information about all entries in a table called
+\texttt{userTable}:
+\begin{verbatim}
+SELECT userId, aString, FROM userTable
+\end{verbatim} 
+
+To list the entries in this table that have the answer to the meaning
+of life:
+\begin{verbatim}
+SELECT userId, FROM userTable WHERE anInt = 42
+\end{verbatim} 
+
+\subsection{Supported SQL}
+SQL SELECT statements are restricted by 3 components: the R-GMA SQL
+Parser, limitations on continuous queries, and limitations imposed by
+external components. 
+
+Continuous queries must be of a form which can be evaluated on each
+tuple in isolation.
+
+Finally the R-GMA SQL parser accepts SQL92 entry level SELECT
+statements except as listed below:
+
+\begin{itemize}
+\item
+Trailing decimal points in a number -- e.g. 123.
+
+\item 
+The keywords \texttt{AS} and \texttt{ESCAPE}.
+
+\item
+Nested \texttt{SELECT} statement after keyword \texttt{SOME}.
+
+\item 
+The keyword  \texttt{HAVING} after a table name or  \texttt{WHERE} clause.
+
+\item
+"," used after  \texttt{COUNT(*)} -- e.g. \texttt{SELECT
+  COUNT(*),SUM(NUMKEY) FROM UPUNIQ}
+
+\item
+Lack of space between elements in expression.
+
+\item
+Column names in double quotes.
+
+\item
+Expressions with 2 column name elements inside \texttt{MAX()},
+\texttt{SUM()}, and \texttt{AVG()}.
+
+\item Every column name in a \texttt{SELECT} must be unique. This also
+implies that queries of the from \texttt{SELECT * FROM A,B} are also
+not allowed as the * would include the R-GMA system columns twice in
+the join. In the unlikely event that you need two columns in a join
+with the same name but with a different meaning, the R-GMA team can
+propose a work-around.
+
+\end{itemize}
+

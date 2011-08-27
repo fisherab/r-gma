@@ -1,0 +1,118 @@
+\section{rgma-sp}
+\label{sec:rgma-sp}
+The \texttt{rgma-sp} tool allows users to setup an R-GMA secondary
+producer without having to write any code. This is done via a
+configuration file, which containing a set of user configurable
+tables. Reasons for archiving tables in this way include:
+
+\begin{itemize}
+\item To allow the use of latest queries on data that is published by
+  continuous primary producers
+\item To allow queries that involve joining tables published by
+  different primary producers
+\end{itemize}
+
+\subsection{Configuration}
+
+The \texttt{rgma-sp} tool reads its configuration from a file using
+the format:
+
+\begin{verbatim}
+<property> = <value>
+\end{verbatim}
+
+Lines beginning with \verb@#@ are comments and are ignored.
+
+The first ``='' is significant in separating the property name and its
+value. The value may contain `=''.
+
+The case of the parameter names is not significant.
+
+The following parameters are recognized in the configuration file:
+
+\begin{tabular*}{15cm}{lp{10cm}}
+
+  \verb@Type@ &
+  The type of consumer queries the producer supports. This is made up
+  of a sequence of letters from the set \texttt{C} for continuous
+  \texttt{L} for latest and \texttt{H} for history. The case of the
+  letters is not significant. For example \texttt{type = CH} \\* \\
+ 
+  \verb@LogicalName@ & Logical name for the database to store archived
+  information. This database will be created, if necessary, by the
+  R-GMA server. This must be specified. \\* \\
+
+  \verb@HRP@ & Defines the history retention period for the secondary
+  producer - in minutes.  \\* \\
+
+  \verb@Tables@ & Table names to archive, defined as a space separated
+  list of table names. \\* \\
+
+  \verb@x_HRP@ & HRP for table x, over-rides the value defined by HRP
+  \\* \\
+    
+  \verb@x_PREDICATE@ & Predicate for table x - if not specified an
+  empty predicate is used \\* \\
+    
+\end{tabular*}
+
+\subsection{An Example Configuration File}
+
+\begin{verbatim}
+type = L
+LOGicalName = fruity
+HRP = 60
+tables = userTable myTable topBanana
+userTable_HRP = 120
+userTable_predicate = WHERE anInt = 10
+myTable_HRP = 90
+topBanana_predicate = WHERE country = 'somewhere'
+\end{verbatim}
+
+\subsection{Running It}
+
+To create your secondary producer:
+
+\begin{verbatim}
+rgma-sp start id-file config-file
+\end{verbatim}
+
+The first parameter \texttt{id-file} is the name of a file which will
+be created.  The contents will be used by subsequent calls to identify
+the secondary producer on the server. The \texttt{config-file} should
+have the format as described above. If successful a number will be
+returned on stdout. This is the time (expressed in seconds) by which
+you must contact the secondary producer to keep it alive.
+
+To do this use the ping call:
+
+\begin{verbatim}
+rgma-sp ping id-file
+\end{verbatim}
+
+The \texttt{id-file} is the same file name that was specified when the
+secondary producer was created. If successful there will be no
+output. Ping must be called periodically to keep the secondary
+producer alive.
+
+To terminate the secondary producer:
+
+\begin{verbatim}
+rgma-sp stop id-file
+\end{verbatim}
+
+Again the \texttt{id-file} is the same file name that was specified
+when the secondary producer was created. If successful there will be no
+output.
+
+\subsection{Managing a Secondary Producer}
+\label{sec:rgma-sp-manager}
+
+The easiest way to look after pinging the secondary producer, and if
+necessary recreating it, is to ask the sysadmin of the R-GMA server to
+deposit the tested configuration file in a directory
+\verb!<rgma_home>!\texttt{/etc /rgma-sp-manager} on the server
+machine. Cron jobs running there will notice new, modified or deleted
+files in that directory and ensure that there is a secondary producer
+matching each configuration file. To shut down a secondary producer
+simply remove its configuration file.

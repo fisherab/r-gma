@@ -1,0 +1,53 @@
+\section{Logging}
+\label{sec:logging}
+\index{Logging}
+
+\begin{sloppypar}
+The R-GMA server uses the log4j package to manage logging. Messages
+are written to a named logger at a specified severity level and output
+to one or more logging files.
+\end{sloppypar}
+
+\subsection{Severity levels}
+
+Logging messages on the server are categorized using the log4j
+severity levels \texttt{FATAL}, \texttt{ERROR}, \texttt{WARN},
+\texttt{INFO} and \texttt{DEBUG}.  Messages should be assigned to a
+level according to the following guidelines:
+
+\begin{tabular*}{18cm}{lp{13cm}}
+\\
+  \texttt{FATAL} & The server is shutting down.\\ 
+  \texttt{ERROR} & Either an unanticipated failure (i.e. a bug 
+                in R-GMA), or an anticipated failure that may result in loss of
+                information from the system (e.g. database failure, tuple 
+                not streamed).\\ 
+  \texttt{WARN} & Anticipated failure (e.g. firewalled connection, network error)
+               or a failure caused by bad user input (e.g. invalid tuple, 
+               attempt to contact expired resource).\\ 
+  \texttt{INFO} & Reporting of an operation executed by the server. The level
+               of detail should be approximately the same as the specification
+               and where appropriate use the same terminology. Any given 
+               operation should only be reported once at this level (after completion).\\ 
+  \texttt{DEBUG} & Reporting of an implementation-level operation. This may include
+                details beyond what is described in the specification and an
+                operation may generate more than one message at this level.\\ 
+\end{tabular*}
+
+\subsection{General guidelines}
+
+\begin{itemize}
+\item Stack traces should not be logged unless the exception was
+unanticipated.
+\item Don't log a warning and throw an exception for the same error.
+Exceptions should be logged when they are caught if they cannot be 
+handled without error.
+\item Log messages should be brief but include as much relevant
+information as practical.
+\item Completed operations should be logged rather than entry/exit
+into particular methods.
+\item When concatentating more than two strings for an \texttt{INFO}
+or \texttt{DEBUG} message, the log4j methods \texttt{isDebugEnabled()}
+and \texttt{isInfoEnabled()} should be used to avoid the cost of
+constructing the message.
+\end{itemize}

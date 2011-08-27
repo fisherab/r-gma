@@ -1,0 +1,144 @@
+v 6.2.0 5/5/2010
+================
+Bug None   User guides updated
+
+v6.0.2 28/01/10 
+===============
+Bug #34140 Python and C APIs updated to produce 2 exceptions only
+
+v6.0.1 02/12/09 
+===============
+Bug None   New facility to build from source on "any" platform
+Bug None   for etics building latex stuff
+Bug #7622  Corrections to examples in the user guide
+Bug None   Added resilient consumer and producer examples to the user guides
+Bug #15086 Set the default umask for daemons so new files are not world-writable
+Bug #14537 Removed stream producer entry from rgma.conf
+Bug None   Minor corrections to the user guides
+
+v5.0.4 15/11/05
+===============
+bug #13673 removed configuration of old servlet names from setup script
+
+v5.0.3 3/11/05
+==============
+bug #13312 now obsoletes system-tests to avoid client-check conflict
+
+v5.0.2 24/10/05
+===============
+Updated for 1.5
+fixed typos
+
+v5.0.1 14/10/05
+===============
+Bug #7332 Added rgma-daemonize.py to turn our tools into daemons
+Install rgma-setup in $RGMA_HOME/bin
+Write new servlet properties (PrimaryProducerServlet etc) to rgma.conf
+Changed rgma-client-check to check only APIs which are installed
+Added some info on joining result sets in python
+Fixed python examples to avoid deprecated apis
+Added old-servlets specification document.
+Bug #9405 In exampes docs, set rgma pythonpath entries before existing entries
+
+v4.1.19 27/6/05
+===============
+now obsoletes edg-rgma-services as this rpm dows not exist any more
+
+v4.1.18 14/6/05
+===============
+rmp now obsoletes edg prefixed rpms
+
+v4.1.17 6/6/05
+==============
+removed createion of rgmauser from post install script in rmp spec file
+
+v4.1.16 18/5/05
+==============
+Reverted UserTable->userTable
+
+v4.1.15
+=======
+Bug #7838 Corrected spelling error in intro.tex
+Bug #7449 Check for bad host name in rgma-setup.py
+Bug #8025 Make sure fully-qualified hostname is used in setup script
+Updated CPP docs to reflect CPP API changes which were missed
+
+v4.1.14
+=======
+Improved User Guides following Stephen Burke's review
+Added detailed API limitations and note about slow secure connections to UGs.
+Bug #7451 don't re-raise exception in python examples
+Made retention period 10 minutes in primary producer examples
+
+v4.1.13
+=======
+Quickstart section added to documentation
+
+v4.1.12
+=======
+Fixed instructions for running the Java example (Java UG).
+Removed XERCES_DIR from CPP API compilation instructions.
+bug #6990 Manual should refer to RC1 code
+bug #7018 Manuals should mention case sensitivity issues
+
+v4.1.11
+=======
+
+bug #7014 Added cpp compiler example
+Bug #7012 Reformatted long lines in cpp API Guide to fit on page.
+Bug #6981 Remove system guide and test plan from installation
+Bug #6980 Improved example code and instructions
+Trimmed down command-line documentation for the users guide
+
+v4.1.10
+=======
+Reformatted long lines in Java API Guide to fit on page.
+Expanded security section in API User Guides slightly.
+Added example code with some compiling/running instructions
+Replaced GRID_PROXY_FILE with X509_USER_PROXY
+Added -lssl to compilation documentation for PrimaryProducer (c) example.
+Changed documentation directory name for consistency
+Stage config file for unit tests
+
+v4.1.9
+======
+Bug #None Postinstall script only runs when installing user is root
+Bug #None Added option in setup script to not use security
+Bug #None fixed relocatability of rgma user
+
+v4.0.8
+======
+Bug #None Delete rgma user on uninstall
+
+v4.0.7
+======
+Bug #None Added basic security info to guides.
+
+v4.0.6
+======
+Bug #6443 point rgma user home to /opt/glite/var/rgma
+Bug #None Changed rgma.conf & rgma-setup.py to use SSL connections; added ClientAuthentication properties.
+
+v 4.0.5
+=======
+Bug #none updated ConsumerExample.cpp to reflect API change
+
+v 4.0.4
+=======
+Bug #None Fixed documentation bugs.
+Bug #None Fixed PrimaryProducerExample.cpp
+Bug #None Fixed PrimaryProducerExample.java.
+
+V 4.0.3
+=======
+Bug #5306 Use GLITE_LOCATION in rgma-setup.py if RGMA_HOME is not set
+
+V 4.0.2
+=======
+
+Bug #5412 Improve help for rgma-setup.py and allow port numbers to be set
+
+Version 4.0.1
+
+Bug #5293 fixed database producer URL in rgma-setup script 
+

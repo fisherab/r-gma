@@ -1,0 +1,23 @@
+\section{Exceptions}
+\label{sec:exceptions}
+
+R-GMA APIs may throw one of two kinds of \emph{RGMAException} for
+reporting when an error occurs in an R-GMA application:
+
+\begin{description}
+\item[RGMATemporaryException]Exception
+  thrown when an R-GMA call fails, but calling the method again after
+  a delay may be successful.
+\item[RGMAPermanentException]Exception thrown
+  when an R-GMA call fails and repeating the call will not be
+  successful.
+\end{description}
+
+These sub-exceptions of RGMAException are implemented as subclasses of
+RGMAException by those API languages that support the concept, so that
+clients can just catch RGMAException if they choose to.
+
+Warnings\index{warning} are only issued in R-GMA in response to
+consumer queries, to indicate possible inadequacies in the
+results. They are appended to the query's tuple set.
+

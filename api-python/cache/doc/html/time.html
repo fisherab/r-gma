@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Time Classes &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Resource Classes" href="resources.html" />
+    <link rel="prev" title="Schema Operations" href="schema.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Classes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="schema.html" title="Schema Operations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="time-classes">
+<h1>Time Classes<a class="headerlink" href="#time-classes" title="Permalink to this headline">¶</a></h1>
+<p>Time intervals are handled in a uniform manner using the <a title="rgma.TimeInterval" class="reference internal" href="#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">TimeInterval</span></tt></a> and <a title="rgma.TimeUnit" class="reference internal" href="#rgma.TimeUnit"><tt class="xref docutils literal"><span class="pre">TimeUnit</span></tt></a> classes.</p>
+<div class="section" id="timeinterval">
+<h2>TimeInterval<a class="headerlink" href="#timeinterval" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.TimeInterval">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">TimeInterval</tt><big>(</big><em>value</em>, <em>units=TimeUnit.SECONDS</em><big>)</big><a class="headerlink" href="#rgma.TimeInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encapsulates a time value and the units being used.</p>
+<p>Time intervals may not be negative</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>value</em> (<cite>int</cite>) &#8211; length of the time interval</li>
+<li><em>units</em> (<a title="rgma.TimeUnit" class="reference internal" href="#rgma.TimeUnit"><tt class="xref docutils literal"><span class="pre">rgma.TimeUnit</span></tt></a>) &#8211; the units of the measurement</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.TimeInterval.getValueAs">
+<tt class="descname">getValueAs</tt><big>(</big><span class="optional">[</span><em>units=TimeUnit.SECONDS</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#rgma.TimeInterval.getValueAs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Returns the length of the time interval in the specified units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>units</em> (<a title="rgma.TimeUnit" class="reference internal" href="#rgma.TimeUnit"><tt class="xref docutils literal"><span class="pre">rgma.TimeUnit</span></tt></a>) &#8211; the units of the measurement</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">an int with the length of the time interval in the specified units</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="timeunit">
+<h2>TimeUnit<a class="headerlink" href="#timeunit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.TimeUnit">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">TimeUnit</tt><a class="headerlink" href="#rgma.TimeUnit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time units of various lengths - each represented by a class variable.</p>
+<dl class="attribute">
+<dt id="rgma.TimeUnit.SECONDS">
+<tt class="descname">SECONDS</tt><a class="headerlink" href="#rgma.TimeUnit.SECONDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A time unit of seconds</p>
+<dl class="attribute">
+<dt id="rgma.TimeUnit.MINUTES">
+<tt class="descname">MINUTES</tt><a class="headerlink" href="#rgma.TimeUnit.MINUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A time unit of minutes</p>
+<dl class="attribute">
+<dt id="rgma.TimeUnit.HOURS">
+<tt class="descname">HOURS</tt><a class="headerlink" href="#rgma.TimeUnit.HOURS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A time unit of hours</p>
+<dl class="attribute">
+<dt id="rgma.TimeUnit.DAYS">
+<tt class="descname">DAYS</tt><a class="headerlink" href="#rgma.TimeUnit.DAYS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A time unit of days</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Time Classes</a><ul>
+<li><a class="reference external" href="#timeinterval">TimeInterval</a></li>
+<li><a class="reference external" href="#timeunit">TimeUnit</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="schema.html"
+                                  title="previous chapter">Schema Operations</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="resources.html"
+                                  title="next chapter">Resource Classes</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Classes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="schema.html" title="Schema Operations"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

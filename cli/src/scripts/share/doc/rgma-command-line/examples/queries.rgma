@@ -1,0 +1,21 @@
+## Set up SP and insert data into the system
+set sp table userTable
+sleep 3
+insert into usertable (userid) values("aaa")
+insert into usertable (userid) values("aab")
+insert into usertable (userid) values("aac")
+insert into usertable (userid) values("aba")
+insert into usertable (userid) values("aba")
+insert into usertable (userid) values("aaa")
+insert into usertable (userid) values("aaa")
+insert into usertable (userid) values("aaa")
+insert into usertable (userid) values("aab")
+insert into usertable (userid) values("aac")
+sleep 3
+
+## Try various queries
+set query H
+select * from userTable
+select ** from userTable where userid='aaa'
+select userid, astring from usertable;
+select userid, count(userid) from userTable group by userid;

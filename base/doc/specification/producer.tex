@@ -1,0 +1,51 @@
+\section{Producer Operations}\label{sec:Producer}\index{producer}
+
+Operations defined here are are common to all producers. 
+
+\subsection{Interface}
+
+\subsubsection{User Interface}
+
+\begin{method}{getHistoryRetentionPeriod}
+\inpar{xsd:int connectionId}{Producer resource identifier.}
+\inpar{xsd:string tableName}{VDBTable name.}
+\outhead{Tuple(1..1)}{}
+\outpar{xsd:int hrpSec}{History Retention Period in seconds.}
+\desc Returns a Producer resource's declared History Retention Period for
+a given table.
+\end{method}
+
+\subsubsection{System Interface}
+
+\begin{method}{start}
+\inpar{xsd:int connectionId}{Producer resource identifier.}
+\inpar{xsd:string select}{Consumer's SQL SELECT query.}
+\inpar{xsd:string queryType}{``continuous", ``latest", ``history" or ``static"}
+\inpar{xsd:int(0..1) timeIntervalSec}{Time interval associated with queryType}
+\inpar{xsd:long timeoutSec}{Query timeout in seconds.}
+\inpar{xsd:string consumerURL}{Consumer's URL.}
+\inpar{xsd:int consumerId}{Consumer's resource ID.}
+\inpar{xsd:string streamingURL} {URL for streaming.}
+\inpar{xsd:int streamingPort} {Port number for streaming.}
+\inpar{xsd:int bufferSize} {Maximum buffer size to use for streaming.}
+\inpar{xsd:int streamingProtocol} {Protocol number to use for streaming.}
+\inpar{xsd:string qosAttrib}{Consumer's desired Quality of Service.}
+\outhead{Tuple(1:1)}{}
+\outpar{xsd:string tableName}{}
+\outpar{xsd:long timestamp}{}
+\desc Requests the producer to execute a query and start 
+streaming tuples to the specified consumer. The query will have been generated 
+by the mediator and can be assumed to be valid: both tables and views may be 
+queried (see~\ref{sec:SecurityViews}). It is assumed that there is a streaming 
+server listening on the given endpoint, ready to receive the tuples pushed to 
+it.
+\end{method}
+
+\begin{method}[producer]{abort}
+\inpar{xsd:int connectionId}{Producer resource identifier.}
+\inpar{xsd:string consumerURL}{Consumer's URL.}
+\inpar{xsd:int consumerId}{Consumer's resource ID.}
+\OK
+\desc Requests the producer to stop streaming tuples to the specified consumer and
+abort the query.
+\end{method}

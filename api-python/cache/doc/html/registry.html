@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Registry operations &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Schema Operations" href="schema.html" />
+    <link rel="prev" title="Consumers" href="consumers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="schema.html" title="Schema Operations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="consumers.html" title="Consumers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="registry-operations">
+<h1>Registry operations<a class="headerlink" href="#registry-operations" title="Permalink to this headline">¶</a></h1>
+<p>The registry holds information about available producers and consumers.</p>
+<div class="section" id="registry">
+<h2>Registry<a class="headerlink" href="#registry" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Registry">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Registry</tt><big>(</big><em>vdbName</em><big>)</big><a class="headerlink" href="#rgma.Registry" title="Permalink to this definition">¶</a></dt>
+<dd><p>A registry provides information about available producers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>vdbName</em> (<cite>string</cite>) &#8211; name of VDB</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.Registry.getAllProducersForTable">
+<tt class="descname">getAllProducersForTable</tt><big>(</big><em>tableName</em><big>)</big><a class="headerlink" href="#rgma.Registry.getAllProducersForTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all producers for a table with their registered information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>name</em> (<cite>string</cite>) &#8211; name of table</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of <a title="rgma.ProducerTableEntry" class="reference internal" href="#rgma.ProducerTableEntry"><tt class="xref docutils literal"><span class="pre">ProducerTableEntry</span></tt></a> objects, one for each producer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="producertableentry">
+<h2>ProducerTableEntry<a class="headerlink" href="#producertableentry" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.ProducerTableEntry">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">ProducerTableEntry</tt><big>(</big><em>endpoint</em>, <em>secondary</em>, <em>continuous</em>, <em>static</em>, <em>history</em>, <em>latest</em>, <em>predicate</em>, <em>hrpSec</em><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="rgma.ProducerTableEntry.getEndpoint">
+<tt class="descname">getEndpoint</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.getEndpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the producer&#8217;s endpoint.</p>
+<p>return: <a title="rgma.ResourceEndpoint" class="reference external" href="resources.html#rgma.ResourceEndpoint"><tt class="xref docutils literal"><span class="pre">rgma.ResourceEndpoint</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.getPredicate">
+<tt class="descname">getPredicate</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.getPredicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the predicate.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>string</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.getRetentionPeriod">
+<tt class="descname">getRetentionPeriod</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.getRetentionPeriod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the producer&#8217;s history retention period.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.isContinuous">
+<tt class="descname">isContinuous</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.isContinuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the producer support continuous queries?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if producer supports continuous queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.isHistory">
+<tt class="descname">isHistory</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.isHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the producer support history queries?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if producer supports history queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.isLatest">
+<tt class="descname">isLatest</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.isLatest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the producer support latest queries?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if producer supports latest queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.isSecondary">
+<tt class="descname">isSecondary</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.isSecondary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is the producer a secondary producer?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if producer is secondary</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ProducerTableEntry.isStatic">
+<tt class="descname">isStatic</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ProducerTableEntry.isStatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does the producer support static queries?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean <tt class="xref docutils literal"><span class="pre">True</span></tt> if producer supports static queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Registry operations</a><ul>
+<li><a class="reference external" href="#registry">Registry</a></li>
+<li><a class="reference external" href="#producertableentry">ProducerTableEntry</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="consumers.html"
+                                  title="previous chapter">Consumers</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="schema.html"
+                                  title="next chapter">Schema Operations</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="schema.html" title="Schema Operations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="consumers.html" title="Consumers"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

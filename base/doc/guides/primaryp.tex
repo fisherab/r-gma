@@ -1,0 +1,37 @@
+% $Id: primaryp.tex,v 1.15 2010/01/04 15:06:40 fisher Exp $
+\section{Primary Producers}
+\label{sec:primaryp}
+
+\subsection{History Retention Period}
+
+If the user sends a \texttt{close} request the primary producer will
+no longer be contactable from the user API. However the resource will
+remain available to consumers until the \emph{HistoryRetentionPeriod}
+is reached for all of the data. If the termination interval is
+exceeded, the resource behaves as though it had received a
+\texttt{close} request.
+
+The resource is destroyed immediately when the user issues an explicit
+\texttt{destroy} request.
+
+\subsection{Producer Properties}
+All producers support continuous queries, but you may also specify
+that you want the producer to also support history and/or latest
+queries.
+
+The tuple-storage maintained by primary and secondary producers can
+either be in memory or in a real database table. You should choose
+whichever is the most appropriate.
+
+For a memory based primary producer, there is a server defined limit
+on how many tuples can be inserted into each producer. If this limit
+is exceeded, or if server resources are low, an RGMATemporaryException
+will be thrown and application code should wait a little while.
+
+A common pattern is to use a memory based producer as the primary one
+and then to use a secondary producer to collect the information and hold it in
+an RDBMS. This is the example we consider here.
+
+\subsection{Primary Producer Examples}
+This provides examples of code you might use or adapt.
+\subsubsection{Simple Primary Producer Example}

@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Exceptions &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="prev" title="Service operations" href="service.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="service.html" title="Service operations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="exceptions">
+<h1>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h1>
+<p>For resilience of client code it is important to deal with exceptions correclty.
+The general style of programming should be to print a message and give up when
+receiving an RGMAPermanentException and to try again after an
+RGMATemporaryException.</p>
+<div class="section" id="rgmapermanentexception">
+<h2>RGMAPermanentException<a class="headerlink" href="#rgmapermanentexception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="rgma.RGMAPermanentException">
+<em class="property">exception </em><tt class="descclassname">rgma.</tt><tt class="descname">RGMAPermanentException</tt><a class="headerlink" href="#rgma.RGMAPermanentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.RGMAException" class="reference internal" href="#rgma.RGMAException"><tt class="xref docutils literal"><span class="pre">rgma.RGMAException</span></tt></a></p>
+<p>Exception thrown when it is unlikely that repeating the call will be successful.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="rgmatemporaryexception">
+<h2>RGMATemporaryException<a class="headerlink" href="#rgmatemporaryexception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="rgma.RGMATemporaryException">
+<em class="property">exception </em><tt class="descclassname">rgma.</tt><tt class="descname">RGMATemporaryException</tt><a class="headerlink" href="#rgma.RGMATemporaryException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.RGMAException" class="reference internal" href="#rgma.RGMAException"><tt class="xref docutils literal"><span class="pre">rgma.RGMAException</span></tt></a></p>
+<p>Exception thrown when an R-GMA call fails, but calling the method again after a delay may be
+successful.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="rgmaexception">
+<h2>RGMAException<a class="headerlink" href="#rgmaexception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="rgma.RGMAException">
+<em class="property">exception </em><tt class="descclassname">rgma.</tt><tt class="descname">RGMAException</tt><a class="headerlink" href="#rgma.RGMAException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Exception thrown when an error occurs in the RGMA application.</p>
+<dl class="method">
+<dt id="rgma.RGMAException.getMessage">
+<tt class="descname">getMessage</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.RGMAException.getMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the message associated with the exception</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the message as a <cite>string</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.RGMAException.getNumSuccessfulOps">
+<tt class="descname">getNumSuccessfulOps</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.RGMAException.getNumSuccessfulOps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of successful operations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the number of successful operations as an <cite>integer</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Exceptions</a><ul>
+<li><a class="reference external" href="#rgmapermanentexception">RGMAPermanentException</a></li>
+<li><a class="reference external" href="#rgmatemporaryexception">RGMATemporaryException</a></li>
+<li><a class="reference external" href="#rgmaexception">RGMAException</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="service.html"
+                                  title="previous chapter">Service operations</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="service.html" title="Service operations"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

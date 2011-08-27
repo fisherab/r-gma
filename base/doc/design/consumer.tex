@@ -1,0 +1,56 @@
+\section{Consumer Service}
+\label{sec:consumerService}
+\index{Service!Consumer}
+
+Package: \texttt{org.glite.rgma.server.services.consumer}
+
+
+This extends the ResourceManagementService. Its primary function is to manage
+the consumer resources. The consumer resource 
+extends the \texttt{Resource} described in
+Section~\ref{sec:Resource} in addition to the states defined by a
+resource it has a mode which must be one of:
+
+\begin{description}
+
+\item[NEW] Not yet started
+
+\item[STARTED] Start has been called
+
+\item[RUNNING] Plan has been generated and producers started
+
+\item[FINISHED] Query completed
+
+\item[ABORTED] Query aborted
+
+\end{description}
+
+The transition from \texttt{STARTED} to \texttt{RUNNING} is made by the 
+GetPlans task for a normal start call and is set directly within a start call 
+for a directed query. The transition from \texttt{RUNNING} to \texttt{FINISHED} 
+is triggered by the \texttt{pop()} call.
+
+The ConsumerResource deals with plans from the mediator. These all require calls
+to the registry and so make use of the task queue. For any resource only one plan
+related task should be queued at any one time so a single variable is used to
+keep track of these tasks.
+
+Each Consumer Resource has a Tuple Queue.  The Tuple Queue is entirely private 
+to the Consumer Resource - the Streaming Receiver Thread (see
+Sec.\ref{sec:queryAnsweringSubsystem} calls the resource's 
+\texttt{insert()} method (defined by its Streaming Sink Interface) to add 
+tuples, and the Consumer Service calls the resource's \texttt{pop()} method to 
+remove them. Although the Consumer Service will authorize each call to the pop 
+operation itself, access to the data in the Tuple Queue requires no further 
+authorization. There is no timeout or cleanup of tuples in the Tuple Queue - 
+the termination interval of the Consumer Resource itself is sufficient. The 
+Tuple Queue holds a number of tuples in memory. If the maximum tuples in memory 
+is exceeded, a group of tuples is taken off the queue and stored in a DB table 
+with a unique incrementing ID to preserve the order. A ``read'' and ``write'' 
+pointer to the RB table is kept in memory so that a group of tuples can be 
+popped with a single query. Tuples are taken first from the data base table and 
+then from memory to preserve the queue ordering.
+
+If the tuple queue fills up, the consumer's query is aborted. It does this by
+calling the abort(RGMAException) on the consumer so that the exception can
+be stored and returned at the next pop() call.

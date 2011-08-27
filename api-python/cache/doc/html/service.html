@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Service operations &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Exceptions" href="exceptions.html" />
+    <link rel="prev" title="Resource Classes" href="resources.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exceptions.html" title="Exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Classes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="service-operations">
+<h1>Service operations<a class="headerlink" href="#service-operations" title="Permalink to this headline">¶</a></h1>
+<p>These are static operations.</p>
+<div class="section" id="rgmaservice">
+<h2>RGMAService<a class="headerlink" href="#rgmaservice" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.RGMAService">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">RGMAService</tt><a class="headerlink" href="#rgma.RGMAService" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="rgma.RGMAService.dropTupleStore">
+<em class="property">static </em><tt class="descname">dropTupleStore</tt><big>(</big><em>logicalName</em><big>)</big><a class="headerlink" href="#rgma.RGMAService.dropTupleStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permanently deletes a named tuple store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>logicalName</em> (<cite>string</cite>) &#8211; name of tuple store</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rgma.RGMAService.getTerminationInterval">
+<em class="property">static </em><tt class="descname">getTerminationInterval</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.RGMAService.getTerminationInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the termination interval that will be applied to all resources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the termination interval as a <a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rgma.RGMAService.getVersion">
+<em class="property">static </em><tt class="descname">getVersion</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.RGMAService.getVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value of the version of the RGMA server in use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the server version as a <cite>string</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rgma.RGMAService.listTupleStores">
+<em class="property">static </em><tt class="descname">listTupleStores</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.RGMAService.listTupleStores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of existing tuple stores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[ <a title="rgma.TupleStore" class="reference internal" href="#rgma.TupleStore"><tt class="xref docutils literal"><span class="pre">rgma.TupleStore</span></tt></a> ] objects that belong to you</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tuplestore">
+<h2>TupleStore<a class="headerlink" href="#tuplestore" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.TupleStore">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">TupleStore</tt><a class="headerlink" href="#rgma.TupleStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>A named database used by a <a title="rgma.Producer" class="reference external" href="producers.html#rgma.Producer"><tt class="xref docutils literal"><span class="pre">Producer</span></tt></a> to store tuples.</p>
+<dl class="method">
+<dt id="rgma.TupleStore.getLogicalName">
+<tt class="descname">getLogicalName</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleStore.getLogicalName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the logical name for this tuple store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">logical name as a string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TupleStore.isHistory">
+<tt class="descname">isHistory</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleStore.isHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if this tuple store supports history queries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if this tuple store supports history queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TupleStore.isLatest">
+<tt class="descname">isLatest</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TupleStore.isLatest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if this tuple store supports latest queries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if this tuple store supports latest queries</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Service operations</a><ul>
+<li><a class="reference external" href="#rgmaservice">RGMAService</a></li>
+<li><a class="reference external" href="#tuplestore">TupleStore</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="resources.html"
+                                  title="previous chapter">Resource Classes</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="exceptions.html"
+                                  title="next chapter">Exceptions</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="exceptions.html" title="Exceptions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="resources.html" title="Resource Classes"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

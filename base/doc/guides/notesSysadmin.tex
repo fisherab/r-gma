@@ -1,0 +1,134 @@
+\section{Installation, Configuration and Maintenance}
+
+There are several configuration files on the server that sysadmin need
+to be aware of, as well as a number of scripts. It is assumed
+that \verb|<rgma_home>/sbin/| is in your path.
+
+\subsection{Client and Server Configuration}
+\label{sec:conf}
+Configuration of both clients and servers is done with the
+\texttt{rgma-setup} script. This includes the production of default
+\texttt{client-acl.txt} and \texttt{log4j.properties} files. To see
+all the options run it with the \texttt{--help} option.
+
+To configure a client that is not running on the server use:
+
+\begin{verbatim}
+rgma-setup --hostname=<SERVER HOSTNAME>
+\end{verbatim}
+
+To configure a server use:
+
+\begin{verbatim}
+rgma-setup --DBAdminPassword=<PASSWORD DB ADMIN ACCOUNT>
+\end{verbatim}
+
+Two scripts have been provided to test the setup:
+
+\begin{verbatim}
+rgma-server-check
+rgma-client-check
+\end{verbatim}
+
+\subsection{Cron Jobs}
+The setup script places a number of cron jobs in
+\texttt{/etc/cron.d}. These are:
+
+\begin{itemize}
+\item\texttt{rgma-check-tomcat}\\
+This check for problems with tomcat and restarts it if necessary
+
+\item\texttt{rgma-create-tomcat-proxy}\\
+This creates a proxy certificate from the host certificate, for use by
+tomcat
+
+\item\texttt{rgma-fetch-vdbs}\\
+This fetches the VDB configuration files in response to files found in\\
+\verb!<rgma_home>!\texttt{/etc/rgma-server-vdb/}, see \ref{sec:vdbConf}
+
+\item\texttt{rgma-sp-manager}\\
+This is used to run secondary producer services, see \ref{sec:spManager}
+
+\item\texttt{rgma-sp-manager-remove-lock}\\
+This is used to run secondary producer services, see \ref{sec:spManager}
+\end{itemize}
+
+\subsection{Log Files}
+Log files can be found in two locations \texttt{/var/log/tomcat5/} and
+\verb!<rgma_home>!\texttt{/log/rgma/}
+
+\subsection{Client-acl.txt}
+The main change for the sysadmin is that there is now a file
+(\verb!<rgma_home>!\texttt{/etc/rgma-server/client{} -acl.txt}) that
+is used to restrict which client machines can connect to a server. It
+is suggested that the sysadmin will normally restrict to only allow
+access from within their site. The \texttt{rgma-setup} script creates
+a default \texttt{client{}-acl.txt}, which restricts access to
+machines from within the same domain. Each line in the file is
+compared with the client trying to access the server. If a line is
+found that matches (ignoring case) the end of the hostname of the
+client then access is allowed. So an entry ``.ac.uk'' would allow
+access to clients on machines such as ``example.site.ac.uk'' but
+because of the leading dot will not allow access from
+``anotherexample.pac.uk''. Lines beginning with a ``\#'' are
+ignored. If the file is missing or completely empty then all client
+access is denied. If however the file contains \textit{any blank
+  lines} then this offers free access, as all strings end with
+``''. This file is re{}-read every few minutes.
+
+\subsection{Log4j.properties}
+For logging, modify the \texttt{log4j.properties} file to meet site
+requirements.  If it is changed, the modifications will be respected
+within a few minutes. The reading mechanism does not reset the
+existing logging configuration, so if the logging entry is added then
+use the keyword INHERITED to make it return the value of its parent.
+
+\subsection{Grid CA Certificates}
+Since R-GMA authentication is mutual, you will need to install the
+Certificate Authority files for the CA that signs the server
+certificate of any server that users wish to use. These are normally
+located in \texttt{/etc/grid-security/}.
+
+\subsection{Database Mappings}
+\label{sec:dbMapping}
+When users of R-GMA create producers with database storage and a
+logical name, R-GMA maps their tables onto physical tables within the
+R-GMA database. The mapping goes from users DN plus users logical
+database name plus table name to table name in the R-GMA database. It
+is possible to see this mapping using the script:
+
+\begin{verbatim}
+rgma-show-db --pretty <DBAdminUser>  <DBAdminPassword>
+\end{verbatim}
+
+\subsection{VDB Configuration}
+\label{sec:vdbConf}
+To enable a VDB on a site install a file into
+\verb!<rgma_home>!\texttt{/etc/rgma-server/vdb} that contains a URL
+from which the VDB definition file can be downloaded. The name of the
+file holding the URL is the same as the name of the file to be
+downloaded with``.xml" replaced with ``.vdb\_url". A cron job
+downloads the VDB configuration file for each URL file and stores it
+in \verb!<rgma_home>!\texttt{/var/rgma/vdb} or removes it if the web
+server reports, via a ``404 error'' that the VDB definition has been
+removed.
+
+\subsection{Running a User's Secondary Producer as a Service}
+\label{sec:spManager}
+It is possible to run a user's secondary producer as a service with
+the aid of the \texttt{rgma-sp-manager}. Simply deposit the user's
+configuration file in the directory
+\verb!<rgma_home>!\texttt{/etc/rgma-sp-manager} on the server
+machine. The cron jobs of the \texttt{rgma-sp-manager} will notice
+new, modified or deleted files in that directory and ensure that there
+is a secondary producer matching each configuration file. To shut down
+a secondary producer simply remove its configuration file.
+
+The \texttt{rgma-sp-manager} is controlled by two cron jobs. The
+first runs the script that handles the starting, stopping and pinging
+of the secondary producers. The second script if for added
+resilience. It checks that the first script has not hung, if it has it
+will kill the process and remove the lock file.
+
+Log files for the \texttt{rgma-sp-manager} can be found in
+\verb!<rgma_home>!\texttt{/log/rgma/}.

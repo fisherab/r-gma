@@ -1,0 +1,11 @@
+rgma 6.2.0
+api-c 6.1.3
+api-cpp 6.1.3
+api-java 6.1.3
+api-python 6.1.3
+base 6.2.0
+browser 6.2.0
+cli 6.2.0
+server 6.2.0
+sp 1.0.1
+sp-manager 1.0.0

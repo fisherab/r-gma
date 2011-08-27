@@ -1,0 +1,132 @@
+v6.2.1 06/07/2010
+=================
+Bug none   Remove code to interoperate with pre 6.2.0 server
+Bug #35774 Improved security related error handling
+
+v6.1.3 29/4/10
+==============
+Bug none   Remove old API
+Bug none   Make rgma-client-check code conform to server 6.2.0
+Bug none   Add undocumented API for schema.alter
+
+v6.0.1 28/01/10
+===============
+Bug #34140 Major revision to produce a much simpler API - with only 2 exceptions. 
+           The old api, to which few of these notes relate, remains.
+
+v6.0.0 23/11/09
+===============
+Bug none   Make it use the simpler rgma.conf
+Bug none   Disallow non secure operations
+Bug none   Make ResultSet access by column name case independent
+Bug none   Add viewFor field to the TableDefintion
+Bug none   Make client check use a history query
+Bug none   Remove "()" from rgma-client-check code for the producer predicate so that it works with our more strict parser
+Bug none   Fix getProperty to return XML
+Bug none   Add in both RGMAConfigurationException and RGMACompatibilityException
+Bug none   Added tableName before indexName in dropIndex call
+Bug none   Types renumbered to conform to order in spec - not important but makes our life easier
+Bug none   setProperty removed
+Bug none   create/drop Schema/Registry removed
+Bug none   Extended to upport RGMABusyException and RGMANoWorkingReplicasException
+Bug none   Bug #17659 Catch unexpected AssertionError to work around python httplib bug
+Bug none   Bug #15992 Improved invalid response error message
+Bug none   Bug #16150 Fixed cancelling of timeout alarm
+Bug none   Bug #15422 Added client connection timeout of 5 minutes
+Bug none   Added pong functionality to Registry API
+Bug none   Fixed handling of exceptions from HTTP library
+Bug #13725 Treat empty environment variables as unset
+Bug none   Fixed re-use of HTTP connections for performance
+
+v5.0.3 15/11/05
+===============
+Bug #13511 Changed secure connection behaviour to agreed form
+
+v5.0.2 3/11/05
+==============
+updated pydoc and fixed unit test
+
+v5.0.1 14/10/05
+===============
+bug #9109 Schema getAllTables added
+Improved documentation
+Added new exception hierarchy
+Support indexing of tuples by column name
+Deprecated ignoreSlowConsumers
+Parse new metadata and turn column data into the right types if possible
+Added consumer/producer test scripts for client check
+Added list/dropTupleStores
+Support concatenation for result sets
+Support new rgma.conf properties as well as old ones
+Bug #10171 Added __str__ methods to all important classes
+Bug #10182 Detect UnknownResourceException and improve handling of RemoteException
+Added new Schema and Registry apis
+Don't print number of rows at end of result set
+Added support for result set warnings
+Added support for isEndOfResults
+Deprecated API methods marked in documentation and with warnings
+Re-implemented python API natively rather than wrapping C API
+Bug #9606 Map edg.RGMAException onto rgma.RGMAException for reconnect failures
+Bug #9539 Set min retention period for all producer types
+Bug #9406 Clean up .pyc files when rpm is uninstalled
+Bug #9405 In test script, set rgma pythonpath entries before existing entries
+Bug #4634 edg scripts removed
+bug #7189 added user Schema API
+
+v4.1.12 14/6/05
+===============
+rpm now obsoletes edg prefixed rpms
+
+v4.1.11 6/6/05
+==============
+Added setDefaultVDB(vdbName) place holder in api.
+
+v4.1.10 6/6/05
+==============
+Bug #8815 Added correct version dependency for Python
+Added implementation for OnDemandProducer
+Fixed latest/history RPs in primary producer declareTable
+
+v4.1.9 25/5/05
+==============
+Added system tests
+Fixed getLatest/HistoryRetentionPeriod
+
+v4.1.8 18/5/05
+======
+Bug #8553 Fixed history-only secondary producer
+Bug #8510 Fixed reconnect
+Bug #8510 Fixed retrieval of url and connection ID from resources
+
+v4.1.7
+======
+Fixed bug in insertList
+Bug #7625 Improved warning when retention period can't be set
+
+v4.1.6
+======
+Bug #7310 Support multiple registry properties
+
+v4.1.5
+======
+Changed documentation directory name for consistency
+
+v 4.1.4
+=======
+Fixed bug when properties file has comments or blank lines
+
+v 4.0.3
+=======
+Bug #5306 use GLITE_LOCATION as alternative to RGMA_HOME
+
+v4.0.2
+=======
+
+Bug #None Added name / type mapping for query types
+Bug #None Fixed printing of ResultSet tables
+Bug #None Implemented support for directed queries
+
+V 4.0.1 
+=======
+
+Bug #None Fixed critical import bug

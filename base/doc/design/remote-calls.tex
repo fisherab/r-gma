@@ -1,0 +1,27 @@
+\section{Remote Call Subsystem}
+\label{sec:remoteCallSubsystem}
+\index{Subsystem!Remote Call}
+
+For each service to be called a class is provided which has only static
+methods and which is responsible for generating the http(s) request to
+the remote service and unpacking any results. These classes throw
+exceptions as needed but do not themselves try to repeat calls if they
+fail (see section \ref{sec:tasksAndRemoteCalls})  Three sub-exceptions
+of \texttt{Remote\-Exception}: \texttt{ConnectTimeout\-Exception},
+\texttt{WriteTimeout\-Exception} and \texttt{ReadTimeout\-Exception}
+provide more information in the event of the remote connection failing
+for network reasons. 
+
+Each class should have methods for the system interface and for those
+user calls which may be made by other services.
+
+The class should also detect any calls that are local to the machine and make a
+direct call. This both saves time and facilitates testing.
+
+Remote calls are inherently unreliable, so as far as possible, remote
+calls should be inside tasks managed by the task management system
+described in section \ref{sec:taskManagementSubsystem}.
+
+
+
+

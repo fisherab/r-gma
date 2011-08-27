@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Schema Operations &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Time Classes" href="time.html" />
+    <link rel="prev" title="Registry operations" href="registry.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="time.html" title="Time Classes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="registry.html" title="Registry operations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="schema-operations">
+<h1>Schema Operations<a class="headerlink" href="#schema-operations" title="Permalink to this headline">¶</a></h1>
+<p>The schema holds table definitions</p>
+<div class="section" id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Schema">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Schema</tt><big>(</big><em>vdbName</em><big>)</big><a class="headerlink" href="#rgma.Schema" title="Permalink to this definition">¶</a></dt>
+<dd><p>A schema allows tables to be created and their definitions manipulated for a specific VDB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>vdbName</em> (<cite>string</cite>) &#8211; name of VDB</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.Schema.createIndex">
+<tt class="descname">createIndex</tt><big>(</big><em>createIndexStatement</em><big>)</big><a class="headerlink" href="#rgma.Schema.createIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an index on a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>createIndexStatement</em> (<cite>string</cite>) &#8211; SQL CREATE INDEX statement</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.createTable">
+<tt class="descname">createTable</tt><big>(</big><em>createTableStatement</em>, <em>authzRules</em><big>)</big><a class="headerlink" href="#rgma.Schema.createTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a table in the schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>createTableStatement</em> (<cite>string</cite>) &#8211; SQL CREATE TABLE statement</li>
+<li><em>authzRules</em> (<cite>string</cite> or [ <cite>string</cite> ]) &#8211; authorization rule or list of authorization rules</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.createView">
+<tt class="descname">createView</tt><big>(</big><em>createViewStatement</em>, <em>authzRules</em><big>)</big><a class="headerlink" href="#rgma.Schema.createView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a view on a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>createViewStatement</em> (<cite>string</cite>) &#8211; SQL CREATE VIEW statement</li>
+<li><em>authzRules</em> (<cite>string</cite> or [ <cite>string</cite> ]) &#8211; authorization rules or list of authorization rules</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.dropIndex">
+<tt class="descname">dropIndex</tt><big>(</big><em>tableName</em>, <em>indexName</em><big>)</big><a class="headerlink" href="#rgma.Schema.dropIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops an index from a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>tableName</em> (<cite>string</cite>) &#8211; name of table with index to drop</li>
+<li><em>indexName</em> (<cite>string</cite>) &#8211; name of index to drop</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.dropTable">
+<tt class="descname">dropTable</tt><big>(</big><em>tableName</em><big>)</big><a class="headerlink" href="#rgma.Schema.dropTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops a table from the schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>tableName</em> (<cite>string</cite>) &#8211; name of table to drop</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.dropView">
+<tt class="descname">dropView</tt><big>(</big><em>viewName</em><big>)</big><a class="headerlink" href="#rgma.Schema.dropView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drops a view from the schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>viewName</em> (<cite>string</cite>) &#8211; name of view to drop</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.getAllTables">
+<tt class="descname">getAllTables</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Schema.getAllTables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a list of all tables and views in the schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of <cite>string</cite> with names of all tables and views in the schema</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.getAuthorizationRules">
+<tt class="descname">getAuthorizationRules</tt><big>(</big><em>tableName</em><big>)</big><a class="headerlink" href="#rgma.Schema.getAuthorizationRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the authorization rules for a table or view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>tableName</em> (<cite>string</cite>) &#8211; name of table</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[ <cite>string</cite> ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.getTableDefinition">
+<tt class="descname">getTableDefinition</tt><big>(</big><em>tableName</em><big>)</big><a class="headerlink" href="#rgma.Schema.getTableDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the definition for the named table or view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>viewName</em> (<cite>string</cite>) &#8211; name of view to drop</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.TableDefinition" class="reference internal" href="#rgma.TableDefinition"><tt class="xref docutils literal"><span class="pre">rgma.TableDefinition</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.getTableIndexes">
+<tt class="descname">getTableIndexes</tt><big>(</big><em>tableName</em><big>)</big><a class="headerlink" href="#rgma.Schema.getTableIndexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the list of indexes for a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>tableName</em> (<cite>string</cite>) &#8211; name of table</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.Index" class="reference internal" href="#rgma.Index"><tt class="xref docutils literal"><span class="pre">rgma.Index</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Schema.setAuthorizationRules">
+<tt class="descname">setAuthorizationRules</tt><big>(</big><em>tableName</em>, <em>authzRules</em><big>)</big><a class="headerlink" href="#rgma.Schema.setAuthorizationRules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the authorization rules for the given table or view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>tableName</em> (<cite>string</cite>) &#8211; name of table</li>
+<li><em>authzRules</em> (<cite>string</cite> or [ <cite>string</cite> ]) &#8211; authorization rules or list of authorization rules</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tabledefinition">
+<h2>TableDefinition<a class="headerlink" href="#tabledefinition" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.TableDefinition">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">TableDefinition</tt><a class="headerlink" href="#rgma.TableDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definitions of a table, including table name and column details.</p>
+<dl class="method">
+<dt id="rgma.TableDefinition.getColumns">
+<tt class="descname">getColumns</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TableDefinition.getColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the column definitions for this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[ <a title="rgma.ColumnDefinition" class="reference internal" href="#rgma.ColumnDefinition"><tt class="xref docutils literal"><span class="pre">rgma.ColumnDefinition</span></tt></a> ] column definitions for this table</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TableDefinition.getTableName">
+<tt class="descname">getTableName</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TableDefinition.getTableName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a string with the name of this table</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TableDefinition.getViewFor">
+<tt class="descname">getViewFor</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TableDefinition.getViewFor" title="Permalink to this definition">¶</a></dt>
+<dd>Returns name of table for which this is a view or <tt class="xref docutils literal"><span class="pre">None</span></tt>.</dd></dl>
+
+<dl class="method">
+<dt id="rgma.TableDefinition.isView">
+<tt class="descname">isView</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.TableDefinition.isView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if this is a view rather than a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if this is a view rather than a table</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="columndefinition">
+<h2>ColumnDefinition<a class="headerlink" href="#columndefinition" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.ColumnDefinition">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">ColumnDefinition</tt><a class="headerlink" href="#rgma.ColumnDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition of a column which may be used inside a <a title="rgma.TableDefinition" class="reference internal" href="#rgma.TableDefinition"><tt class="xref docutils literal"><span class="pre">rgma.TableDefinition</span></tt></a>.</p>
+<dl class="method">
+<dt id="rgma.ColumnDefinition.getName">
+<tt class="descname">getName</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ColumnDefinition.getName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a string with the name of the column</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ColumnDefinition.getSize">
+<tt class="descname">getSize</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ColumnDefinition.getSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the size of the column type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the size of the column type (or 0 if none is specified)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ColumnDefinition.getType">
+<tt class="descname">getType</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ColumnDefinition.getType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the type of the column.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.RGMAType" class="reference internal" href="#rgma.RGMAType"><tt class="xref docutils literal"><span class="pre">rgma.RGMAType</span></tt></a> as the type of the column</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ColumnDefinition.isNotNull">
+<tt class="descname">isNotNull</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ColumnDefinition.isNotNull" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the NOT NULL flag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if column is <tt class="docutils literal"><span class="pre">NOT</span> <span class="pre">NULL</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.ColumnDefinition.isPrimaryKey">
+<tt class="descname">isPrimaryKey</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.ColumnDefinition.isPrimaryKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PRIMARY KEY flag.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><tt class="xref docutils literal"><span class="pre">True</span></tt> if column is <tt class="docutils literal"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="index">
+<h2>Index<a class="headerlink" href="#index" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Index">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Index</tt><a class="headerlink" href="#rgma.Index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Information about an index on a table.</p>
+<dl class="method">
+<dt id="rgma.Index.getIndexName">
+<tt class="descname">getIndexName</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Index.getIndexName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of this index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><cite>string</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.Index.getColumnNames">
+<tt class="descname">getColumnNames</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Index.getColumnNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of column names used by this index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">[ <cite>string</cite> ]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="rgmatype">
+<h2>RGMAType<a class="headerlink" href="#rgmatype" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.RGMAType">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">RGMAType</tt><a class="headerlink" href="#rgma.RGMAType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constants for SQL column types.</p>
+<dl class="attribute">
+<dt id="rgma.RGMAType.INTEGER">
+<tt class="descname">INTEGER</tt><a class="headerlink" href="#rgma.RGMAType.INTEGER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.REAL">
+<tt class="descname">REAL</tt><a class="headerlink" href="#rgma.RGMAType.REAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.DOUBLE">
+<tt class="descname">DOUBLE</tt><a class="headerlink" href="#rgma.RGMAType.DOUBLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.CHAR">
+<tt class="descname">CHAR</tt><a class="headerlink" href="#rgma.RGMAType.CHAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.VARCHAR">
+<tt class="descname">VARCHAR</tt><a class="headerlink" href="#rgma.RGMAType.VARCHAR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.TIMESTAMP">
+<tt class="descname">TIMESTAMP</tt><a class="headerlink" href="#rgma.RGMAType.TIMESTAMP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.DATE">
+<tt class="descname">DATE</tt><a class="headerlink" href="#rgma.RGMAType.DATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rgma.RGMAType.TIME">
+<tt class="descname">TIME</tt><a class="headerlink" href="#rgma.RGMAType.TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Schema Operations</a><ul>
+<li><a class="reference external" href="#schema">Schema</a></li>
+<li><a class="reference external" href="#tabledefinition">TableDefinition</a></li>
+<li><a class="reference external" href="#columndefinition">ColumnDefinition</a></li>
+<li><a class="reference external" href="#index">Index</a></li>
+<li><a class="reference external" href="#rgmatype">RGMAType</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="registry.html"
+                                  title="previous chapter">Registry operations</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="time.html"
+                                  title="next chapter">Time Classes</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="time.html" title="Time Classes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="registry.html" title="Registry operations"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

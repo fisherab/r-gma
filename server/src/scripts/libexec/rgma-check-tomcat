@@ -1,0 +1,56 @@
+#!/bin/sh
+
+TOMCAT=$1
+SERVICE_NAME=tomcat-error-check
+LOCK_FILE_DIR=/var/lock/subsys
+LOCK_FILE=${LOCK_FILE_DIR}/${SERVICE_NAME}
+TOMCAT_LOG=/usr/share/$TOMCAT/logs/catalina.out
+TOMCAT_SCRIPT=/etc/init.d/$TOMCAT
+
+# check if previous cron is still running
+if [ -e "$LOCK_FILE" ]
+then
+    # check how long previous cron has been running and kill it if it has been going to long
+    TOO_NEW=`find $LOCK_FILE_DIR -name $SERVICE_NAME -mmin -10 -print | wc -l`
+    if [ $TOO_NEW -gt 0 ]; then
+        exit 0
+    else
+        kill `cat $LOCK_FILE`
+        rm -f "$LOCK_FILE"
+        echo "`date +\"%F %T\"`: $SERVICE_NAME Killed hung restart job"
+    fi
+fi
+
+#create a new lock file
+echo $$ > $LOCK_FILE
+
+MEM_ERROR=`grep "OutOfMemoryError" $TOMCAT_LOG |wc -l`
+HOT_SPOT_ERROR=`grep "An unexpected error has been detected by HotSpot Virtual Machine" $TOMCAT_LOG |wc -l`
+TOO_MANY_FILES=`grep "Too many open files" $TOMCAT_LOG |wc -l`
+THREADS_BUSY=`grep "Increase maxThreads" $TOMCAT_LOG |wc -l`
+START_FAILED=`grep "start failed" $TOMCAT_LOG |wc -l`
+
+if [ $MEM_ERROR -gt 0 ] || \
+   [ $HOT_SPOT_ERROR -gt 0 ] || \
+   [ $TOO_MANY_FILES -gt 0 ] || \
+   [ $THREADS_BUSY -gt 0 ]; then
+    echo "`date +\"%F %T\"` restarting tomcat"
+    $TOMCAT_SCRIPT stop
+    mv $TOMCAT_LOG ${TOMCAT_LOG}.err
+    $TOMCAT_SCRIPT start
+    echo "`date +\"%F %T\"` tomcat restarted"
+else
+    echo "`date +\"%F %T\"` `$TOMCAT_SCRIPT start`"
+fi
+
+if [ $START_FAILED -gt 0 ]; then
+    echo "`date +\"%F %T\"` restarting tomcat"
+    $TOMCAT_SCRIPT stop
+    kill -9 `ps -ef |grep tomcat4 |awk '{print $2}'`
+    mv $TOMCAT_LOG ${TOMCAT_LOG}.err
+    $TOMCAT_SCRIPT start
+    echo "`date +\"%F %T\"` tomcat restarted"
+fi
+
+#script finished so remove lock file
+rm -f "$LOCK_FILE"

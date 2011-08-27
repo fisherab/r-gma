@@ -1,0 +1,66 @@
+Lines 0--7 are the various \texttt{include} statements.
+
+Lines 8--13 are a set of \texttt{using} statements to avoid clutter
+in the code.
+
+Line 24 create a the primary producer which supports continuous
+queries, with memory based storage. The user can specify that the
+producer supports history and/or latest queries.
+
+Lines 25--30 define the predicate and a pair of retention periods (60
+minutes in each case) and then declare the intention of publishing to
+a table called \texttt{default.userTable}. A producer is able to
+publish to more than one table.
+
+Lines 31--36 build an SQL insert statement and then call
+the \texttt{insert} method of the primary producer with that SQL
+statement as an argument.
+
+Line 37 close the primary producer.
+
+Lines 39--42 report any R-GMA exceptions that may occur.
+
+\subsubsection{Resilient Primary Producer Example}
+
+This example illustrates how to write a resilient producer according
+to the recommendations in section \ref{sec:advice}.  The primary
+producer publishes information periodically every 30 seconds. If there
+is a temporary problem it retries after one minute. If there is a
+permanent problem then the program exits.
+
+\input{ResilientPrimaryProducer-cpp}
+
+Lines 0--10 are the various \texttt{include} statements.
+
+Lines 11--18 are a set of \texttt{using} statements to avoid clutter
+in the code.
+
+Line 27 set up initial state for the producer.
+
+Lines 30--31 set up the history and latest retention periods.
+
+Lines 32--43 create a new primary producer. If there is an
+RGMATemporaryException then sleep for 60 seconds before retrying to
+recreate the producer.
+
+Line 44 set up the producer predicate.
+
+Line 45 set up initial state for the table.
+
+Lines 46--60 declare the \texttt{default.userTable}. If there is an
+RGMATemporaryException then sleep for 60 seconds before trying to
+re-declare the table.
+
+Line 61 initialises the data value that is going to be inserted into
+each tuple.
+
+Lines 63--81 loops forever - each iteration will insert a new
+tuple. In our example, tuples contain the userId and the current value
+of the \texttt{data} variable that gets incremented on each successful
+iteration of the loop. For the purpose of this example a delay of 30
+seconds has been introduced between each insert. If there is an
+RGMATemporaryException then sleep for 60 seconds before retrying to
+insert the tuple.
+
+Lines 83--89 report an RGMAPermanentException. As this is considered
+to be a permanent problem there is no point retrying the operation.

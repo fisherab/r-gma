@@ -1,0 +1,402 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Producers &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="index.html" />
+    <link rel="next" title="Consumers" href="consumers.html" />
+    <link rel="prev" title="R-GMA Python API" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="consumers.html" title="Consumers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="R-GMA Python API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="producers">
+<h1>Producers<a class="headerlink" href="#producers" title="Permalink to this headline">¶</a></h1>
+<p>Producers come in three types: <a title="rgma.PrimaryProducer" class="reference internal" href="#rgma.PrimaryProducer"><tt class="xref docutils literal"><span class="pre">PrimaryProducer</span></tt></a>,  <a title="rgma.SecondaryProducer" class="reference internal" href="#rgma.SecondaryProducer"><tt class="xref docutils literal"><span class="pre">SecondaryProducer</span></tt></a> and  <a title="rgma.OnDemandProducer" class="reference internal" href="#rgma.OnDemandProducer"><tt class="xref docutils literal"><span class="pre">OnDemandProducer</span></tt></a></p>
+<div class="section" id="primaryproducer">
+<h2>PrimaryProducer<a class="headerlink" href="#primaryproducer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.PrimaryProducer">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">PrimaryProducer</tt><big>(</big><em>storage</em>, <em>supportedQueries</em><big>)</big><a class="headerlink" href="#rgma.PrimaryProducer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.Producer" class="reference internal" href="#rgma.Producer"><tt class="xref docutils literal"><span class="pre">rgma.Producer</span></tt></a></p>
+<p>A primary producer publishes information into R-GMA.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>storage</em> (<a title="rgma.Storage" class="reference internal" href="#rgma.Storage"><tt class="xref docutils literal"><span class="pre">rgma.Storage</span></tt></a>) &#8211; a storage object to define the type and, if permanent, the name of the storage to be used</li>
+<li><em>supportedQueries</em> (<a title="rgma.SupportedQueries" class="reference internal" href="#rgma.SupportedQueries"><tt class="xref docutils literal"><span class="pre">rgma.SupportedQueries</span></tt></a>) &#8211; a supported queries object to define what query types the producer will be able to support.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.PrimaryProducer.declareTable">
+<tt class="descname">declareTable</tt><big>(</big><em>name</em>, <em>predicate</em>, <em>historyRetentionPeriod</em>, <em>latestRetentionPeriod</em><big>)</big><a class="headerlink" href="#rgma.PrimaryProducer.declareTable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> (<cite>string</cite>) &#8211; the name of the table to declare</li>
+<li><em>predicate</em> (<cite>string</cite>) &#8211; an SQL WHERE clause defining the subset of a table that this producer will publish. To publish to the
+whole table, an empty predicate can be used.</li>
+<li><em>historyRetentionPeriod</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; the history retention period for this table</li>
+<li><em>latestRetentionPeriod</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; the default latest retention period for tuples inserted into this table. It can be overridden when
+inserting tuples.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.PrimaryProducer.insert">
+<tt class="descname">insert</tt><big>(</big><em>insertStatement</em>, <em>latestRetentionPeriod=None</em><big>)</big><a class="headerlink" href="#rgma.PrimaryProducer.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Publishes a single tuple or a list of tuples into a table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>insertStatement</em> (<cite>string</cite> or <cite>[str]</cite>) &#8211; a string or list of strings representing a SQL INSERT statement providing the data to publish and the table into which to put it</li>
+<li><em>latestRetentionPeriod</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; latest retention period for this tuple or tuples (overrides LRP defined for table)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="secondaryproducer">
+<h2>SecondaryProducer<a class="headerlink" href="#secondaryproducer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.SecondaryProducer">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">SecondaryProducer</tt><big>(</big><em>storage</em>, <em>supportedQueries</em><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.Producer" class="reference internal" href="#rgma.Producer"><tt class="xref docutils literal"><span class="pre">rgma.Producer</span></tt></a></p>
+<p>Republish information from other producers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>storage</em> (<a title="rgma.Storage" class="reference internal" href="#rgma.Storage"><tt class="xref docutils literal"><span class="pre">rgma.Storage</span></tt></a>) &#8211; a storage object to define the type and, if permanent, the name of the storage to be used</li>
+<li><em>supportedQueries</em> (<a title="rgma.SupportedQueries" class="reference internal" href="#rgma.SupportedQueries"><tt class="xref docutils literal"><span class="pre">rgma.SupportedQueries</span></tt></a>) &#8211; a supported queries object to define what query types the producer will be able to support.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.SecondaryProducer.declareTable">
+<tt class="descname">declareTable</tt><big>(</big><em>name</em>, <em>predicate</em>, <em>historyRetentionPeriod</em><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer.declareTable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> (<cite>string</cite>) &#8211; the name of the table to declare</li>
+<li><em>predicate</em> (<cite>string</cite>) &#8211; an SQL WHERE clause defining the subset of a table that this producer will publish. To publish to the
+whole table, an empty predicate can be used.</li>
+<li><em>historyRetentionPeriod</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; the history retention period for this table</li>
+<li><em>latestRetentionPeriod</em> (<a title="rgma.TimeInterval" class="reference external" href="time.html#rgma.TimeInterval"><tt class="xref docutils literal"><span class="pre">rgma.TimeInterval</span></tt></a>) &#8211; the default latest retention period for tuples inserted into this table. It can be overridden when
+inserting tuples.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.SecondaryProducer.getResourceId">
+<tt class="descname">getResourceId</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer.getResourceId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the resouceId to be used as the argument to subsequent static showSignOfLife calls.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">the resourceId as an int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rgma.SecondaryProducer.showSignOfLife">
+<tt class="descname">showSignOfLife</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer.showSignOfLife" title="Permalink to this definition">¶</a></dt>
+<dd>Contacts the secondary producer resource to check that it is still alive and prevent it from being timed out.</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rgma.SecondaryProducer.staticClose">
+<em class="property">static </em><tt class="descname">staticClose</tt><big>(</big><em>resourceId</em><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer.staticClose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contacts the secondary producer resource to close it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>resourceId</em> (<cite>int</cite>) &#8211; the identifier of the resource to be checked</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rgma.SecondaryProducer.staticShowSignOfLife">
+<em class="property">static </em><tt class="descname">staticShowSignOfLife</tt><big>(</big><em>resourceId</em><big>)</big><a class="headerlink" href="#rgma.SecondaryProducer.staticShowSignOfLife" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contacts the secondary producer resource to check that it is still alive and prevent it from being timed out.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameter:</th><td class="field-body"><em>resourceId</em> (<cite>int</cite>) &#8211; the identifier of the resource to be checked</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">bool <tt class="xref docutils literal"><span class="pre">True</span></tt> if resource is still alive otherwise <tt class="xref docutils literal"><span class="pre">False</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="ondemandproducer">
+<h2>OnDemandProducer<a class="headerlink" href="#ondemandproducer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.OnDemandProducer">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">OnDemandProducer</tt><big>(</big><em>hostName</em>, <em>port</em><big>)</big><a class="headerlink" href="#rgma.OnDemandProducer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.Producer" class="reference internal" href="#rgma.Producer"><tt class="xref docutils literal"><span class="pre">rgma.Producer</span></tt></a></p>
+<p>A client uses an on-demand producer to publish data into R-GMA when the cost of creating each message is high. The
+on-demand producer only generates messages when there is a specific query from a consumer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>hostName</em> (<cite>string</cite>) &#8211; the host name of the system that will respond to queries</li>
+<li><em>port</em> (<cite>integer</cite>) &#8211; the port on the specified host that will respond to queries</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rgma.OnDemandProducer.declareTable">
+<tt class="descname">declareTable</tt><big>(</big><em>name</em>, <em>predicate</em><big>)</big><a class="headerlink" href="#rgma.OnDemandProducer.declareTable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><em>name</em> (<cite>string</cite>) &#8211; the name of the table to declare</li>
+<li><em>predicate</em> (<cite>string</cite>) &#8211; an SQL WHERE clause defining the subset of a table that this producer will publish. To publish to the whole table, an empty predicate can be used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="storage">
+<h2>Storage<a class="headerlink" href="#storage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Storage">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Storage</tt><a class="headerlink" href="#rgma.Storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Storage location for tuples.</p>
+<dl class="staticmethod">
+<dt id="rgma.Storage.getDatabaseStorage">
+<em class="property">static </em><tt class="descname">getDatabaseStorage</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Storage.getDatabaseStorage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Gets a database storage object. If no logical name is given the storage cannot be reused.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a database <a title="rgma.Storage" class="reference internal" href="#rgma.Storage"><tt class="xref docutils literal"><span class="pre">rgma.Storage</span></tt></a> object</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="rgma.Storage.getMemoryStorage">
+<em class="property">static </em><tt class="descname">getMemoryStorage</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Storage.getMemoryStorage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Gets a temporary memory storage object. This storage cannot be reused.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a temporary memory <a title="rgma.Storage" class="reference internal" href="#rgma.Storage"><tt class="xref docutils literal"><span class="pre">rgma.Storage</span></tt></a> object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="supportedqueries">
+<h2>SupportedQueries<a class="headerlink" href="#supportedqueries" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.SupportedQueries">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">SupportedQueries</tt><a class="headerlink" href="#rgma.SupportedQueries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Types of query supported by a primary or secondary producer - each represented by a class variable.</p>
+<dl class="attribute">
+<dt id="rgma.SupportedQueries.C">
+<tt class="descname">C</tt><a class="headerlink" href="#rgma.SupportedQueries.C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous queries only.</p>
+<dl class="attribute">
+<dt id="rgma.SupportedQueries.CH">
+<tt class="descname">CH</tt><a class="headerlink" href="#rgma.SupportedQueries.CH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous and history queries.</p>
+<dl class="attribute">
+<dt id="rgma.SupportedQueries.CL">
+<tt class="descname">CL</tt><a class="headerlink" href="#rgma.SupportedQueries.CL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous and latest queries.</p>
+<dl class="attribute">
+<dt id="rgma.SupportedQueries.CHL">
+<tt class="descname">CHL</tt><a class="headerlink" href="#rgma.SupportedQueries.CHL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Continuous, History and Latest queries.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="producer">
+<h2>Producer<a class="headerlink" href="#producer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="rgma.Producer">
+<em class="property">class </em><tt class="descclassname">rgma.</tt><tt class="descname">Producer</tt><a class="headerlink" href="#rgma.Producer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a title="rgma.Resource" class="reference external" href="resources.html#rgma.Resource"><tt class="xref docutils literal"><span class="pre">rgma.Resource</span></tt></a></p>
+<p>A producer.</p>
+<dl class="method">
+<dt id="rgma.Producer.getResourceEndpoint">
+<tt class="descname">getResourceEndpoint</tt><big>(</big><big>)</big><a class="headerlink" href="#rgma.Producer.getResourceEndpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the resource endpoint to be used in the constructor of a consumer to make a &#8220;directed query&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><a title="rgma.ResourceEndpoint" class="reference external" href="resources.html#rgma.ResourceEndpoint"><tt class="xref docutils literal"><span class="pre">rgma.ResourceEndpoint</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Producers</a><ul>
+<li><a class="reference external" href="#primaryproducer">PrimaryProducer</a></li>
+<li><a class="reference external" href="#secondaryproducer">SecondaryProducer</a></li>
+<li><a class="reference external" href="#ondemandproducer">OnDemandProducer</a></li>
+<li><a class="reference external" href="#storage">Storage</a></li>
+<li><a class="reference external" href="#supportedqueries">SupportedQueries</a></li>
+<li><a class="reference external" href="#producer">Producer</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">R-GMA Python API</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="consumers.html"
+                                  title="next chapter">Consumers</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="consumers.html" title="Consumers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="R-GMA Python API"
+             >previous</a> |</li>
+        <li><a href="index.html">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

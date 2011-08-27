@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>R-GMA Python API &mdash; R-GMA Python API v6.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6.1.0',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="R-GMA Python API v6.1.0 documentation" href="" />
+    <link rel="next" title="Producers" href="producers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="producers.html" title="Producers"
+             accesskey="N">next</a> |</li>
+        <li><a href="">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="r-gma-python-api">
+<h1>R-GMA Python API<a class="headerlink" href="#r-gma-python-api" title="Permalink to this headline">¶</a></h1>
+<p>The Relational Grid Monitoring Architecture provides a service for information,
+monitoring and logging in a distributed computing environment.</p>
+<p>R-GMA makes all the information appear like one large Relational Database
+that may be queried to find the information required. It consists of Producers
+which publish information into R-GMA, and Consumers which subscribe.</p>
+<p>Contents:</p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="producers.html">Producers</a><ul>
+<li class="toctree-l2"><a class="reference external" href="producers.html#primaryproducer">PrimaryProducer</a></li>
+<li class="toctree-l2"><a class="reference external" href="producers.html#secondaryproducer">SecondaryProducer</a></li>
+<li class="toctree-l2"><a class="reference external" href="producers.html#ondemandproducer">OnDemandProducer</a></li>
+<li class="toctree-l2"><a class="reference external" href="producers.html#storage">Storage</a></li>
+<li class="toctree-l2"><a class="reference external" href="producers.html#supportedqueries">SupportedQueries</a></li>
+<li class="toctree-l2"><a class="reference external" href="producers.html#producer">Producer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="consumers.html">Consumers</a><ul>
+<li class="toctree-l2"><a class="reference external" href="consumers.html#consumer">Consumer</a></li>
+<li class="toctree-l2"><a class="reference external" href="consumers.html#querytype">QueryType</a></li>
+<li class="toctree-l2"><a class="reference external" href="consumers.html#querytypewithinterval">QueryTypeWithInterval</a></li>
+<li class="toctree-l2"><a class="reference external" href="consumers.html#tupleset">TupleSet</a></li>
+<li class="toctree-l2"><a class="reference external" href="consumers.html#tuple">Tuple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="registry.html">Registry operations</a><ul>
+<li class="toctree-l2"><a class="reference external" href="registry.html#registry">Registry</a></li>
+<li class="toctree-l2"><a class="reference external" href="registry.html#producertableentry">ProducerTableEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="schema.html">Schema Operations</a><ul>
+<li class="toctree-l2"><a class="reference external" href="schema.html#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference external" href="schema.html#tabledefinition">TableDefinition</a></li>
+<li class="toctree-l2"><a class="reference external" href="schema.html#columndefinition">ColumnDefinition</a></li>
+<li class="toctree-l2"><a class="reference external" href="schema.html#index">Index</a></li>
+<li class="toctree-l2"><a class="reference external" href="schema.html#rgmatype">RGMAType</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="time.html">Time Classes</a><ul>
+<li class="toctree-l2"><a class="reference external" href="time.html#timeinterval">TimeInterval</a></li>
+<li class="toctree-l2"><a class="reference external" href="time.html#timeunit">TimeUnit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="resources.html">Resource Classes</a><ul>
+<li class="toctree-l2"><a class="reference external" href="resources.html#resource">Resource</a></li>
+<li class="toctree-l2"><a class="reference external" href="resources.html#resourceendpoint">ResourceEndpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="service.html">Service operations</a><ul>
+<li class="toctree-l2"><a class="reference external" href="service.html#rgmaservice">RGMAService</a></li>
+<li class="toctree-l2"><a class="reference external" href="service.html#tuplestore">TupleStore</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="exceptions.html">Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference external" href="exceptions.html#rgmapermanentexception">RGMAPermanentException</a></li>
+<li class="toctree-l2"><a class="reference external" href="exceptions.html#rgmatemporaryexception">RGMATemporaryException</a></li>
+<li class="toctree-l2"><a class="reference external" href="exceptions.html#rgmaexception">RGMAException</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h4>Next topic</h4>
+            <p class="topless"><a href="producers.html"
+                                  title="next chapter">Producers</a></p>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="producers.html" title="Producers"
+             >next</a> |</li>
+        <li><a href="">R-GMA Python API v6.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2004-2009 on behalf of the EU EGEE Project.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

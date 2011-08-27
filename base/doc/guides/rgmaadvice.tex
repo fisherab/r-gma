@@ -1,0 +1,65 @@
+\section{Advice on Using R-GMA}
+\label{sec:advice}
+
+This section contains various recommendations to help the user make
+the best use of R-GMA.  The aim is to ensure the most reliable
+throughput of tuples and reduce unnecessary load on the servers. 
+
+\subsection{General Advice}
+
+\begin{itemize}
+\item{All R-GMA calls raise exceptions - they must all be caught and
+  handled for reliable use.} 
+\item{Remember to close consumers and producers when you have finished
+   with them. Otherwise they will only be closed when the termination
+   interval has passed.}
+\item{If you get a \texttt{RGMATemporaryException}
+  exception returned, wait for a period of one minute and retry the
+  operation and repeat every minute.} For a \texttt{RGMAPermanentException} you
+  should investigate to find the cause.
+\end{itemize}
+
+\subsection{Primary Producers}
+
+\begin{itemize}
+\item{Set the latest retention period for tuples (in
+  \texttt{declareTable}) to match the life-time for which you think
+  the tuple should be considered to be ``latest'' information. Typically
+  this will be a little greater than the publication interval.}
+
+\item{Set the history retention period (HRP) to hold at least the last
+  measurement so that a new secondary producer can pick up the latest
+  data. It should not normally be significantly longer than this. If
+  you do make it long you may run out of memory on the service (if
+  using memory storage). In this case you have a problem - if you just
+  leave it, or close it, then it will continue to occupy memory until
+  the HRP expires. The only way to clean it up is to \texttt{destroy}
+  it. For this reason HRPs for primary producers using memory storage
+  should normally be short: between 10 and 60 minutes. If the rate of
+  publishing data is very high it may be necessary to have a shorter
+  HRP.}
+   
+\end{itemize}
+
+
+\subsection{Secondary Producers}
+
+\begin{itemize}
+\item{Make use of the \texttt{rgma-sp-manager} and \texttt{rgma-sp} tools to do
+most of the work for you.}
+
+\end{itemize}
+
+\subsection{Consumers}
+\label{sec:adviceConsumers}
+
+\begin{itemize}
+    
+\item{You may get better performance and reduce the load on the server
+  by introducing a delay between successive calls to
+  \texttt{pop}. This allows time for the consumer's buffer to fill up
+  a bit rather than getting back very few tuples (or none at all) each
+  time. Smart code would adjust the polling rate to be as low as
+  possible to keep up with the data. A simpler algorithm would be to
+  wait for 2 seconds after any \texttt{pop} which returns no tuples.}
+\end{itemize}

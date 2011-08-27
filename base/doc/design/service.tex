@@ -1,0 +1,123 @@
+\section{Services and resources}
+
+Package: \texttt{org.glite.rgma.server.servlets}
+
+Package: \texttt{org.glite.rgma.server.services.Service}
+
+Package: \texttt{org.glite.rgma.server.services.resource}
+
+\subsection{Request Management Subsystem}
+\label{sec:requestManagementSubsystem}
+\index{Subsystem!Request Management}
+
+An operation call on an R-GMA Service is handled by an object of class
+RGMAServlet which extends HttpServlet  running within a Servlet Container
+(Tomcat). The class defines init() to set up all the services and destroy() to
+get rid of them as well as doGet() and doPut() to react to https POST and GET
+requests. Tomcat will ensure that init() is called before any call to doPost() or
+doGet(). Tomcat allocates an HTTP Processor Thread for each incoming request so
+syncronization must be considered carefully throughout the R-GMA code.
+
+\subsection{Service}
+\label{sec:service}
+
+Each Service has operations of two kinds - those operations which are
+only invoked by other services (known as the System API) and those
+which may be invoked via an R-GMA client (the User API) 
+
+The way in which calls from one service to a remote service are made is
+explained in section \ref{sec:remoteCallSubsystem}.
+
+The base class of all services is Service.
+
+\subsection{Resource Management Subsystem}
+\label{sec:resourceManagementSubsystem}
+\index{Subsystem!Resource Management}
+
+The Resource Management Subsystem is responsible for keeping Resources 
+registered, closing them when they exceed their termination interval and 
+managing the delayed-destroy of some resource types. The subsystem consists of 
+two parts, a  \texttt{Resource} base class for all resources, and a
+\texttt{ResourceManagementService} 
+which extends \texttt{Service} (Section~\ref{sec:service})
+handles the resource lifecycle.
+
+As an example of its use, the  \texttt{ResourceManagementService} is extended
+by the \texttt{ConsumerService} (section~\ref{sec:consumerService}) and
+the \texttt{Resource} by the \texttt{ConsumerResource}
+
+\subsubsection{Resource}
+\label{sec:Resource}
+
+A resource is identified by a ResourceEndpoint (a combination of a URL
+and an integer resource ID), and has a termination interval (the
+amount of time it will stay active for without any user contact), a
+creator DN (from the certificate of the user who created the resource)
+and a last contact time (the system time when the last user API method
+was called on the resource).
+
+Resources use 'soft-state' registration and will be automatically
+closed and destroyed if they are not contacted by a user for a time
+greater than their termination interval.
+
+A resource may be in one of 4 states:
+
+\begin{description}
+
+\item[NEW] Just created but not yet ready for use
+
+\item[ACTIVE] Ready for use
+
+\item[CLOSED] May not be contacted via the User API
+
+\item[DESTROYED] May not be contacted via any API
+
+\end{description}
+
+\texttt{close} puts the resource in the \texttt{CLOSED} state,
+likewise \texttt{destroy} puts it in the \texttt{DESTROYED}
+state. \texttt{canDestroy} may be overridden by the concrete
+implementation to specify that a resource which is closed should not
+yet be destroyed. For example, a primary producer which has been
+closed should stay alive and registered until the tuples it holds have
+all expired. A user may override this behaviour by calling
+\texttt{destroy} directly.
+
+\texttt{updateLastContactTime} updates the resource's last contact
+time to the current time.  A resource whose last contact time plus its
+termination interval is less than the current system time is expired
+and is liable to be closed. \texttt{hasExpired} tests if a resource
+has expired.
+
+\subsubsection{LocalUpdateTask}
+One of these timer tasks is associated with each resource. The task can be run
+quite frequently as it is very cheap. The code takes the form:
+
+\begin{code}
+\item if resource has expired: close it
+\item if resource is closed
+\begin{code}
+\item if resource can be destroyed:
+\begin{code}
+\item destroy it
+\item remove resource from map and cancel task
+\end{code}
+\end{code}
+\item else if resource is destroyed: remove resource from map and cancel task
+\end{code}
+
+\subsubsection{RemoteUpdateTask}
+One of these timer tasks is also associated with each resource. This is more
+costly as it accesses a registry which may be remote. This has a run method with
+the following code:
+		
+\begin{code}
+\item if resource not closed and not destroyed: update the registry passing in
+the registry termination interval.
+\end{code}
+
+Note that the registry termination interval is set to be slightly longer than
+the interval between running this task.
+
+
+

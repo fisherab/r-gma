@@ -1,0 +1,41 @@
+<project name="browser" default="install">
+
+	<property file="build.properties" />
+	<property name="prefix" value="build/prefix" />
+	<fixcrlf srcdir="src/scripts" />
+
+	<target name="clean">
+		<delete dir="war" />
+		<delete dir="build" />
+		<delete dir="tomcat" />
+		<delete dir = "www-test" />
+	</target>
+
+	<target name="gwtc" description="GWT compile to JavaScript">
+		<java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+			<classpath>
+				<pathelement location="src" />
+				<pathelement location="${gwt.sdk}/gwt-user.jar" />
+				<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
+			</classpath>
+			<jvmarg value="-Xmx256M" />
+			<arg line = "-style OBF" />
+			<arg value="org.glite.rgma.browser.Browser" />
+		</java>
+	</target>
+
+	<target name="cache" depends="gwtc">
+		<copy todir="war/WEB-INF" file="src/config/web.xml" />
+		<jar jarfile="cache/Browser.war" basedir="war" />
+	</target>
+
+	<target name="install">
+		<copy todir="${prefix}">
+			<fileset dir="src/scripts/" />
+		</copy>
+		<chmod perm="ugo+rx" dir="${prefix}/libexec/" includes="*" verbose="Yes" />
+		<copy todir="${prefix}/share/webapps" file="cache/Browser.war" />
+
+	</target>
+
+</project>
